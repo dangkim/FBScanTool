@@ -605,6 +605,9 @@ def scrap_profile(ids):
 
         print("\nScraping:", id)
 
+        followerSpan = driver.find_element_by_xpath("//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
+
         try:
             target_dir = os.path.join(folder, id.split('/')[-1])
             create_folder(target_dir)
