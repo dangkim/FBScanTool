@@ -26,14 +26,6 @@ appliancesKeywords = "Nồi cơm điện,Máy Làm Mát,Điều Hòa,Lò vi són
 autoKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos"
 gameKeywords = "trò chơi,game,trò,down,down load,store,android,ios,phiên bản"
 
-listOfFoodKeyword = foodKeywords.split(",")
-numberOfKey = 0
-for word in listOfFoodKeyword:
-    if (postContent.find(word)):
-        numberOfKey = numberOfKey + 1
-        if(numberOfKey > 1):
-            print("food")
-            break
 
 
 

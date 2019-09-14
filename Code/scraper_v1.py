@@ -31,35 +31,34 @@ download_friends_photos = False
 friends_small_size = True
 photos_small_size = False
 
-total_scrolls = 5
+total_scrolls = 15
 current_scrolls = 10
 scroll_time = 5
 
 old_height = 0
 
-json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Influencer","DisplayText":"","Latest":true,"Published":true,"ModifiedUtc":"","PublishedUtc":"","CreatedUtc":"","Owner":"admin","Author":"ribisachi","Influencer":{"Description":{"Text":""},"Photo":{"Paths":[],"Urls":[]},"Fanpage":{"Text":""},"Email":{"Text":""},"password":{"Text":""},"FullName":{"Text":""},"ShareLink":{"Text":""},"PostImage":{"Text":""},"LiveStream":{"Text":""},"CheckIn":{"Text":""},"Video":{"Text":""},"Phone":{"Text":""},"NumberOfLike":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfLove":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"VideoLink":{"Paths":[]},"NumberOfPost":{"Value":0},"NumberOfFollowers":{"Value":0}},"TitlePart":{"Title":""},"MyCustomPart":{"NumberOfComment":{"Text":""}},"AgeDemorgraphic":{"Percentage":{"Text":""},"AgeGraphicsName":{"Text":""},"AgePercentage":{"Text":""}},"GenderDemorgraphic":{"GenderPercentage":{"Text":""},"GenderGraphicName":{"Text":""}},"GeoDemorgraphic":{"GeoPercentage":{"Text":""},"GeoGraphicName":{"Text":""}},"Post1":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post2":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post3":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post4":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post5":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}}}'
+json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Influencer","DisplayText":"","Latest":true,"Published":true,"ModifiedUtc":"","PublishedUtc":"","CreatedUtc":"","Owner":"admin","Author":"admin","Influencer":{"Description":{"Text":""},"Photo":{"Paths":[],"Urls":[]},"Fanpage":{"Text":""},"Email":{"Text":""},"password":{"Text":""},"FullName":{"Text":""},"ShareLink":{"Text":""},"PostImage":{"Text":""},"LiveStream":{"Text":""},"CheckIn":{"Text":""},"Video":{"Text":""},"Phone":{"Text":""},"NumberOfLike":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfLove":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"VideoLink":{"Paths":[]},"NumberOfPost":{"Value":0},"NumberOfFollowers":{"Value":0}},"TitlePart":{"Title":""},"MyCustomPart":{"NumberOfComment":{"Text":""}},"AgeDemorgraphic":{"Percentage":{"Text":""},"AgeGraphicsName":{"Text":""},"AgePercentage":{"Text":""}},"GenderDemorgraphic":{"GenderPercentage":{"Text":""},"GenderGraphicName":{"Text":""}},"GeoDemorgraphic":{"GeoPercentage":{"Text":""},"GeoGraphicName":{"Text":""}},"Post1":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post2":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post3":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post4":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post5":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}}}'
 
 foodKeywords = "Ăn,uống,nấu,nướng,chiên,xào,hấp,quán,xiên,luộc,bữa,dao,muỗng,nĩa,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,gánh,bánh,cơm,nguội,khói,hổi,dĩa,tô,chén,bếp,lò,than,củi,ngon,dở,nồi,niêu,lửa,củi,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,dai,giòn,bổ,bổ dưỡng,rau,quả,nước tương,xì dầu,mì,bưng,hủ tiếu"
-cosmeticsKeywords = "son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
+cosmeticsKeywords = "môi,son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
 fashionKeywords = "quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vóc,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,lót,bikini,xa xỉ,đẳng cấp,tóc,che khuyến điểm"
 sportKeywords = "gym,yoga,tập,năng động,thể thao,thể dục"
 travelKeywords = "nắng,mưa,hè,thu,check in,xuân,đông,khách sạn,hotel,nhà nghỉ,cảnh,cảnh đẹp,hùng vĩ,thiên nhiên,ồn,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
-eventKeywords = "Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
+eventKeywords = "giải trí,Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
 housewifeKeywords = "con,con cái,bỉm,sữa,tã,núc,lò,nướng,bếp,nhà,cửa,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
-entertainingKeywords = "giải trí"
-technologyKeywords = "nhân tạo,công nghệ,kỹ thuật"
-softwareKeywords = "software,phần mềm,soft,điện thoại"
+technologyKeywords = "down,down load,store,android,ios,phiên bản,software,phần mềm,soft,điện thoại,nhân tạo,công nghệ,kỹ thuật,app"
 realestateKeywords = "nhà,đất,động sản,sổ đỏ,sổ hồng,chung cư,tầng,lầu,cầu thang,biệt thự,giấy tờ,chính chủ,quy hoạch,bản đồ,vay vốn,vốn"
 furnitureKeywords = "bàn,ghế,giường,kệ tivi,tủ,salon,sofa,kệ trang,đèn,đồng hồ,gối,thảm,tranh,két sắt"
 appliancesKeywords = "Nồi cơm điện,Máy Làm Mát,Điều Hòa,Lò vi sóng,Bếp ga,Bếp Âm,Bếp Từ,Hồng Ngoại,Máy hút khói,Nồi áp suất,Máy nóng lạnh,Ấm,Ca,Bình Đun,Máy lọc không khí,Máy xay sinh tố,Bình Thủy Điện,Máy ép trái cây,Máy làm sữa,Máy pha cà phê,Máy Hút Bụi,Bàn Ủi,Quạt,Máy Sấy Tóc,Đồ Dùng Nhà Bếp,Đồ dùng gia đình,Thiết Bị Chiếu Sáng,Nồi,Chảo,Máy nước nóng,Máy Lọc Nước,Bếp Nướng,Bếp gas,Bếp nướng điện,Lẩu điện,Máy đánh trứng,Máy pha cà phê,Máy hút chân không,Lò nướng,Lò vi sóng,Nồi chiên không dầu,Bình đun siêu tốc,Bình thủy điện,Máy hút mùi,Quạt,Quạt sưởi,Cây nước nóng lạnh,Bàn ủi,Máy lọc không khí,Thiết bị làm đẹp,Đèn sưởi,Máy bơm nước,bếp"
-autoKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos"
-gameKeywords = "trò chơi,game,trò,down,down load,store,android,ios,phiên bản"
+autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos,trò chơi,game,trò,down,down load,store,android,ios,phiên bản,chơi"
 
 influencerObject = json.loads(json_string)
 numberOfPost = []
 displayText = ""
+workEducation = ""
 # -------------------------------------------------------------
 # -------------------------------------------------------------
+
 
 def get_facebook_images_url(img_links):
     urls = []
@@ -102,9 +101,11 @@ def image_downloader(img_links, folder_name, username=''):
             os.chdir(folder)
         except:
             print("Error in changing directory.")
-        # index = 0
+        index = 0
         for link in img_links:
-            # index = index + 1
+            index = index + 1
+            if index >= 21:
+                break
             img_name = "None"
             if link != "None":
                 img_name = (link.split('.jpg')[0]).split('/')[-1] + '.jpg'
@@ -114,14 +115,14 @@ def image_downloader(img_links, folder_name, username=''):
                     img_name = "None"
                 else:
                     try:
-                        photoLinks.append(link)                   
+                        photoLinks.append(link)
                         # urllib.request.urlretrieve(link, img_name)
                     except:
                         img_name = "None"
             img_names.append(img_name)
 
-        influencerObject["Influencer"]["VideoLink"]["Path"] = photoLinks
-        
+        influencerObject["Influencer"]["Photo"]["Paths"] = photoLinks
+
         os.chdir(parent)
     except:
         print("Exception (image_downloader):", sys.exc_info()[0])
@@ -168,6 +169,101 @@ def scroll():
 
 # --Helper Functions for Posts
 
+def buildDisplayText(status, work):
+    # resourse = []
+    # resourse.append(foodKeywords.split(","))
+    # resourse.append(cosmeticsKeywords.split(","))
+    # resourse.append(fashionKeywords.split(","))
+    # resourse.append(sportKeywords.split(","))
+    # resourse.append(travelKeywords.split(","))
+    # resourse.append(eventKeywords.split(","))
+    # resourse.append(housewifeKeywords.split(","))
+    # resourse.append(technologyKeywords.split(","))
+    # resourse.append(realestateKeywords.split(","))
+    # resourse.append(furnitureKeywords.split(","))
+    # resourse.append(appliancesKeywords.split(","))
+    # resourse.append(autoGameKeywords.split(","))
+
+    numberOfKey = 0
+    count = 0
+
+    for word in foodKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "food;"
+            break
+
+    for word in cosmeticsKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "cosmetics;"
+            break
+
+    for word in fashionKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "fashion;"
+            break
+
+    for word in sportKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "sport;"
+            break
+
+    for word in travelKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "travel;"
+            break
+
+    for word in eventKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "event;entertaining;"
+            break
+
+    for word in housewifeKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "housewife;"
+            break
+
+    for word in technologyKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "app;technology;software;"
+            break
+
+    for word in realestateKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "realestate;"
+            break
+
+    for word in furnitureKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "furniture;"
+            break
+
+    for word in appliancesKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "appliances;"
+            break
+
+    for word in autoGameKeywords.split(","):
+        if ((status.find(word) != -1) or (work.find(word) != -1)):
+            influencerObject["DisplayText"] += "auto;game"
+            break
+
+
+def getNumberFromThousand(x):
+    numberOfValue = x.rsplit('k', 1)
+    if len(numberOfValue) > 1:
+        return float(numberOfValue[0] * 1000)
+    else:
+        return float(numberOfValue[0])
+
+
+def getThoundsandFromNumber(x):
+    if x >= 1100:
+        stringValue = str(x/1000) + 'k'
+        return stringValue
+    else:
+        return str(x)
+
+
 def get_status(x):
     status = ""
     try:
@@ -181,6 +277,7 @@ def get_status(x):
             pass
     return status
 
+
 def get_div_links(x, tag):
     try:
         temp = x.find_element_by_xpath(".//div[@class='_3x-2']")
@@ -188,9 +285,11 @@ def get_div_links(x, tag):
     except:
         return ""
 
+
 def get_title_links(title):
     l = title.find_elements_by_tag_name('a')
     return l[-1].text, l[-1].get_attribute('href')
+
 
 def get_title(x):
     title = ""
@@ -207,6 +306,7 @@ def get_title(x):
     finally:
         return title
 
+
 def get_time(x):
     time = ""
     try:
@@ -221,20 +321,22 @@ def get_time(x):
     finally:
         return time
 
-def get_reactive(x):
-    reactive = ""
+
+def get_reaction(x):
+    reaction = ""
     try:
-        reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
+        reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
     except:
         try:
-            reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
+            reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
         except:
             try:
-                reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
+                reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
             except:
                 pass
     finally:
-        return reactive
+        return reaction
+
 
 def get_commentno(x):
     commentno = ""
@@ -242,14 +344,17 @@ def get_commentno(x):
         commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
     except:
         try:
-            commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
+            commentno = x.find_element_by_xpath(
+                ".//span[@class='_1whp _4vn2']")
         except:
             try:
-                commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
+                commentno = x.find_element_by_xpath(
+                    ".//span[@class='_1whp _4vn2']")
             except:
                 pass
     finally:
         return commentno
+
 
 def get_share(x):
     share = ""
@@ -260,13 +365,21 @@ def get_share(x):
             share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
         except:
             try:
-                share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
+                share = x.find_element_by_xpath(
+                    ".//span[@class='_355t _4vn2']")
             except:
                 pass
     finally:
         return share
 
+
 def extract_and_write_posts(elements, filename):
+
+    numberOfCommentTotal = 0
+    numberOfReactionTotal = 0
+    numberOfShareTotal = 0
+    indexOfPost = 0
+
     try:
         f = open(filename, 'w', encoding='utf-8', newline='\r\n')
         f.writelines(
@@ -274,13 +387,15 @@ def extract_and_write_posts(elements, filename):
 
         for x in elements:
             try:
+                indexOfPost += 1
+
                 video_link = " "
                 title = " "
                 status = " "
                 link = ""
                 img = " "
                 time = " "
-                reactive = " "
+                reaction = " "
                 commentno = " "
                 share = " "
 
@@ -290,8 +405,8 @@ def extract_and_write_posts(elements, filename):
                 # commentno
                 commentno = get_commentno(x)
 
-                # reactive
-                reactive = get_reactive(x)
+                # reaction
+                reaction = get_reaction(x)
 
                 # time
                 time = get_time(x)
@@ -344,8 +459,8 @@ def extract_and_write_posts(elements, filename):
                 if not isinstance(title, str):
                     title = title.text
 
-                if not isinstance(reactive, str):
-                    reactive = reactive.text
+                if not isinstance(reaction, str):
+                    reaction = reaction.text
 
                 if not isinstance(commentno, str):
                     commentno = commentno.text
@@ -355,11 +470,25 @@ def extract_and_write_posts(elements, filename):
 
                 status = status.replace("\n", " ")
                 title = title.replace("\n", " ")
-                reactive = reactive.replace("\n", " ")
+                reaction = reaction.replace("\n", " ")
                 commentno = commentno.replace("\n", " ")
                 share = share.replace("\n", " ")
 
-                line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reactive) + ' | '+ str(commentno) + ' | '+ str(share) + ' | ' + str(
+                numberOfCommentTotal += getNumberFromThousand(commentno)
+                numberOfReactionTotal += getNumberFromThousand(reaction)
+                numberOfShareTotal += getNumberFromThousand(share)
+
+                if(indexOfPost <= 5):
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["Time"]["Text"] = time
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["Type"]["Text"] = type
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["Title"]["Text"] = title
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["Status"]["Text"] = status
+
+                line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reaction) + ' | ' + str(commentno) + ' | ' + str(share) + ' | ' + str(
                     link) + "\n"
 
                 try:
@@ -368,6 +497,17 @@ def extract_and_write_posts(elements, filename):
                     print('Posts: Could not map encoded characters')
             except:
                 pass
+
+        influencerObject["Influencer"]["NumberOfComment"]["Text"] = getThoundsandFromNumber(
+            numberOfCommentTotal)
+        influencerObject["Influencer"]["NumberOfReaction"]["Text"] = getThoundsandFromNumber(
+            numberOfReactionTotal)
+        influencerObject["Influencer"]["NumberOfShare"]["Text"] = getThoundsandFromNumber(
+            numberOfShareTotal)
+        influencerObject["Influencer"]["NumberOfPost"]["Value"] = len(elements)
+
+        buildDisplayText(status, workEducation)
+
         f.close()
     except:
         print("Exception (extract_and_write_posts)",
@@ -399,7 +539,7 @@ def save_to_file(name, elements, status, current_section, username=''):
         img_names = []
         videoLinks = []
 
-        # dealing with Photos        
+        # dealing with Photos
         if status == 1:
             results = [x.get_attribute('href') for x in elements]
             results.pop(0)
@@ -444,9 +584,9 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         # dealing with About Section
         elif status == 3:
-            results = elements[0].text
-            influencerObject["Influencer"]["FullName"]["Text"] = results
-            f.writelines(results)
+            workEducation = elements[0].text
+            influencerObject["Influencer"]["Description"]["Text"] = workEducation
+            f.writelines(workEducation)
 
         # dealing with Posts
         elif status == 4:
@@ -481,9 +621,9 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         elif status == 2:
             for x in results:
-                videoLinks.append(x)                
+                videoLinks.append(x)
                 f.writelines(x + "\n")
-        influencerObject["Influencer"]["VideoLink"]["Path"] = videoLinks
+            influencerObject["Influencer"]["VideoLink"]["Paths"] = videoLinks
         f.close()
 
     except:
@@ -577,10 +717,12 @@ def scrap_profile(ids):
 
         print("\nScraping:", id)
 
-        followerSpan = driver.find_element_by_xpath("//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+        followerSpan = driver.find_element_by_xpath(
+            "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
         influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
 
-        fullNameHref = driver.find_element_by_xpath("//*[@id='fb-timeline-cover-name']/a")
+        fullNameHref = driver.find_element_by_xpath(
+            "//*[@id='fb-timeline-cover-name']/a")
         influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
 
         try:
@@ -590,32 +732,6 @@ def scrap_profile(ids):
         except:
             print("Some error occurred in creating the profile directory.")
             continue
-
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Friends..")
-        # setting parameters for scrape_data() to scrape friends
-        scan_list = ["All", "Mutual Friends", "Following", "Followers", "Work", "College", "Current City", "Hometown"]
-        section = ["/friends", "/friends_mutual", "/following", "/followers", "/friends_work", "/friends_college",
-                   "/friends_current_city",
-                   "/friends_hometown"]
-        elements_path = ["//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@class,'_3i9')][1]/div/div/ul/li[1]/div[2]/div/div/div/div/div[2]/ul/li/div/a",
-                         "//*[contains(@class,'fbProfileBrowserListItem')]/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a"]
-        file_names = ["All Friends.txt", "Mutual Friends.txt", "Following.txt", "Followers.txt", "Work Friends.txt",
-                      "College Friends.txt",
-                      "Current City Friends.txt", "Hometown Friends.txt"]
-        save_status = 0
-
-        scrape_data(id, scan_list, section, elements_path, save_status, file_names)
-        print("Friends Done!")
-
-        # ----------------------------------------------------------------------------
 
         print("----------------------------------------")
         print("Photos..")
@@ -637,11 +753,13 @@ def scrap_profile(ids):
         # setting parameters for scrape_data() to scrap videos
         scan_list = ["'s Videos", "Videos of"]
         section = ["/videos_by", "/videos_of"]
-        elements_path = ["//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
+        elements_path = [
+            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
         file_names = ["Uploaded Videos.txt", "Tagged Videos.txt"]
         save_status = 2
 
-        scrape_data(id, scan_list, section, elements_path, save_status, file_names)
+        scrape_data(id, scan_list, section, elements_path,
+                    save_status, file_names)
         print("Videos Done!")
         # ----------------------------------------------------------------------------
 
