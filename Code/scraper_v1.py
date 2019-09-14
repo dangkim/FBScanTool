@@ -4,6 +4,7 @@ import platform
 import sys
 import urllib.request
 import time
+import json
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
@@ -22,7 +23,7 @@ driver = None
 
 # whether to download photos or not
 download_uploaded_photos = True
-download_friends_photos = True
+download_friends_photos = False
 
 # whether to download the full image or its thumbnail (small size)
 # if small size is True then it will be very quick else if its false then it will open each photo to download it
@@ -36,7 +37,27 @@ scroll_time = 5
 
 old_height = 0
 
+json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Influencer","DisplayText":"","Latest":true,"Published":true,"ModifiedUtc":"","PublishedUtc":"","CreatedUtc":"","Owner":"admin","Author":"ribisachi","Influencer":{"Description":{"Text":""},"Photo":{"Paths":[],"Urls":[]},"Fanpage":{"Text":""},"Email":{"Text":""},"password":{"Text":""},"FullName":{"Text":""},"ShareLink":{"Text":""},"PostImage":{"Text":""},"LiveStream":{"Text":""},"CheckIn":{"Text":""},"Video":{"Text":""},"Phone":{"Text":""},"NumberOfLike":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfLove":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"VideoLink":{"Paths":[]},"NumberOfPost":{"Value":0},"NumberOfFollowers":{"Value":0}},"TitlePart":{"Title":""},"MyCustomPart":{"NumberOfComment":{"Text":""}},"AgeDemorgraphic":{"Percentage":{"Text":""},"AgeGraphicsName":{"Text":""},"AgePercentage":{"Text":""}},"GenderDemorgraphic":{"GenderPercentage":{"Text":""},"GenderGraphicName":{"Text":""}},"GeoDemorgraphic":{"GeoPercentage":{"Text":""},"GeoGraphicName":{"Text":""}},"Post1":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post2":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post3":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post4":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post5":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}}}'
 
+foodKeywords = "Ăn,uống,nấu,nướng,chiên,xào,hấp,quán,xiên,luộc,bữa,dao,muỗng,nĩa,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,gánh,bánh,cơm,nguội,khói,hổi,dĩa,tô,chén,bếp,lò,than,củi,ngon,dở,nồi,niêu,lửa,củi,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,dai,giòn,bổ,bổ dưỡng,rau,quả,nước tương,xì dầu,mì,bưng,hủ tiếu"
+cosmeticsKeywords = "son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
+fashionKeywords = "quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vóc,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,lót,bikini,xa xỉ,đẳng cấp,tóc,che khuyến điểm"
+sportKeywords = "gym,yoga,tập,năng động,thể thao,thể dục"
+travelKeywords = "nắng,mưa,hè,thu,check in,xuân,đông,khách sạn,hotel,nhà nghỉ,cảnh,cảnh đẹp,hùng vĩ,thiên nhiên,ồn,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
+eventKeywords = "Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
+housewifeKeywords = "con,con cái,bỉm,sữa,tã,núc,lò,nướng,bếp,nhà,cửa,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
+entertainingKeywords = "giải trí"
+technologyKeywords = "nhân tạo,công nghệ,kỹ thuật"
+softwareKeywords = "software,phần mềm,soft,điện thoại"
+realestateKeywords = "nhà,đất,động sản,sổ đỏ,sổ hồng,chung cư,tầng,lầu,cầu thang,biệt thự,giấy tờ,chính chủ,quy hoạch,bản đồ,vay vốn,vốn"
+furnitureKeywords = "bàn,ghế,giường,kệ tivi,tủ,salon,sofa,kệ trang,đèn,đồng hồ,gối,thảm,tranh,két sắt"
+appliancesKeywords = "Nồi cơm điện,Máy Làm Mát,Điều Hòa,Lò vi sóng,Bếp ga,Bếp Âm,Bếp Từ,Hồng Ngoại,Máy hút khói,Nồi áp suất,Máy nóng lạnh,Ấm,Ca,Bình Đun,Máy lọc không khí,Máy xay sinh tố,Bình Thủy Điện,Máy ép trái cây,Máy làm sữa,Máy pha cà phê,Máy Hút Bụi,Bàn Ủi,Quạt,Máy Sấy Tóc,Đồ Dùng Nhà Bếp,Đồ dùng gia đình,Thiết Bị Chiếu Sáng,Nồi,Chảo,Máy nước nóng,Máy Lọc Nước,Bếp Nướng,Bếp gas,Bếp nướng điện,Lẩu điện,Máy đánh trứng,Máy pha cà phê,Máy hút chân không,Lò nướng,Lò vi sóng,Nồi chiên không dầu,Bình đun siêu tốc,Bình thủy điện,Máy hút mùi,Quạt,Quạt sưởi,Cây nước nóng lạnh,Bàn ủi,Máy lọc không khí,Thiết bị làm đẹp,Đèn sưởi,Máy bơm nước,bếp"
+autoKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos"
+gameKeywords = "trò chơi,game,trò,down,down load,store,android,ios,phiên bản"
+
+influencerObject = json.loads(json_string)
+numberOfPost = []
+displayText = ""
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
@@ -72,7 +93,7 @@ def get_facebook_images_url(img_links):
 # takes a url and downloads image from that url
 def image_downloader(img_links, folder_name, username=''):
     img_names = []
-
+    photoLinks = []
     try:
         parent = os.getcwd()
         try:
@@ -93,10 +114,14 @@ def image_downloader(img_links, folder_name, username=''):
                     img_name = "None"
                 else:
                     try:
-                        urllib.request.urlretrieve(link, img_name)
+                        photoLinks.append(link)                   
+                        # urllib.request.urlretrieve(link, img_name)
                     except:
                         img_name = "None"
             img_names.append(img_name)
+
+        influencerObject["Influencer"]["VideoLink"]["Path"] = photoLinks
+        
         os.chdir(parent)
     except:
         print("Exception (image_downloader):", sys.exc_info()[0])
@@ -156,7 +181,6 @@ def get_status(x):
             pass
     return status
 
-
 def get_div_links(x, tag):
     try:
         temp = x.find_element_by_xpath(".//div[@class='_3x-2']")
@@ -164,11 +188,9 @@ def get_div_links(x, tag):
     except:
         return ""
 
-
 def get_title_links(title):
     l = title.find_elements_by_tag_name('a')
     return l[-1].text, l[-1].get_attribute('href')
-
 
 def get_title(x):
     title = ""
@@ -184,7 +206,6 @@ def get_title(x):
                 pass
     finally:
         return title
-
 
 def get_time(x):
     time = ""
@@ -376,60 +397,10 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         results = []
         img_names = []
+        videoLinks = []
 
-        # dealing with Friends
-        if status == 0:
-            # get profile links of friends
-            results = [x.get_attribute('href') for x in elements]
-            results = [create_original_link(x) for x in results]
-
-            # get names of friends
-            people_names = [x.find_element_by_tag_name(
-                "img").get_attribute("aria-label") for x in elements]
-
-            # download friends' photos
-            try:
-                if download_friends_photos:
-                    if friends_small_size:
-                        img_links = [x.find_element_by_css_selector(
-                            'img').get_attribute('src') for x in elements]
-                    else:
-                        links = []
-                        for friend in results:
-                            try:
-                                driver.get(friend)
-                                WebDriverWait(driver, 30).until(
-                                    EC.presence_of_element_located((By.CLASS_NAME, "profilePicThumb")))
-                                l = driver.find_element_by_class_name(
-                                    "profilePicThumb").get_attribute('href')
-                            except:
-                                l = "None"
-
-                            links.append(l)
-
-                        for i in range(len(links)):
-                            if links[i] is None:
-                                links[i] = "None"
-                            elif links[i].find('picture/view') != -1:
-                                links[i] = "None"
-
-                        img_links = get_facebook_images_url(links)
-
-                    folder_names = ["Friend's Photos", "Mutual Friends' Photos", "Following's Photos",
-                                    "Follower's Photos", "Work Friends Photos",
-                                    "College Friends Photos", "Current City Friends Photos", "Hometown Friends Photos"]
-                    print("Downloading " + folder_names[current_section])
-
-                    img_names = image_downloader(
-                        img_links, folder_names[current_section], username)
-                else:
-                    img_names = ["None"] * len(results)
-            except:
-                print("Exception (Images)", str(status), "Status =",
-                      current_section, sys.exc_info()[0])
-
-        # dealing with Photos
-        elif status == 1:
+        # dealing with Photos        
+        if status == 1:
             results = [x.get_attribute('href') for x in elements]
             results.pop(0)
 
@@ -474,6 +445,7 @@ def save_to_file(name, elements, status, current_section, username=''):
         # dealing with About Section
         elif status == 3:
             results = elements[0].text
+            influencerObject["Influencer"]["FullName"]["Text"] = results
             f.writelines(results)
 
         # dealing with Posts
@@ -509,8 +481,9 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         elif status == 2:
             for x in results:
+                videoLinks.append(x)                
                 f.writelines(x + "\n")
-
+        influencerObject["Influencer"]["VideoLink"]["Path"] = videoLinks
         f.close()
 
     except:
@@ -604,6 +577,12 @@ def scrap_profile(ids):
 
         print("\nScraping:", id)
 
+        followerSpan = driver.find_element_by_xpath("//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
+
+        fullNameHref = driver.find_element_by_xpath("//*[@id='fb-timeline-cover-name']/a")
+        influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
+
         try:
             target_dir = os.path.join(folder, id.split('/')[-1])
             create_folder(target_dir)
@@ -670,13 +649,10 @@ def scrap_profile(ids):
         print("About:")
         # setting parameters for scrape_data() to scrap the about section
         scan_list = [None] * 7
-        section = ["/about?section=overview", "/about?section=education", "/about?section=living",
-                   "/about?section=contact-info", "/about?section=relationship", "/about?section=bio",
-                   "/about?section=year-overviews"]
+        section = ["/about?section=education"]
         elements_path = [
             "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
-        file_names = ["Overview.txt", "Work and Education.txt", "Places Lived.txt", "Contact and Basic Info.txt",
-                      "Family and Relationships.txt", "Details About.txt", "Life Events.txt"]
+        file_names = ["Work and Education.txt"]
         save_status = 3
 
         scrape_data(id, scan_list, section, elements_path,

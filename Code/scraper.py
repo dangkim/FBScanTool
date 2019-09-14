@@ -430,6 +430,7 @@ def save_to_file(name, elements, status, current_section, username=''):
                       current_section, sys.exc_info()[0])
 
         # dealing with Photos
+        # Influencer Photos
         elif status == 1:
             results = [x.get_attribute('href') for x in elements]
             results.pop(0)
