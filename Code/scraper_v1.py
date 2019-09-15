@@ -940,7 +940,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "D:\\workspace\\Ultimate-Facebook-Scraper\\Code\\input.txt", newline='\n')]
+        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")
