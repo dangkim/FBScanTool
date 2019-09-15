@@ -62,8 +62,11 @@ workEducation = ""
 
 def get_facebook_images_url(img_links):
     urls = []
-
+    index = 0
     for link in img_links:
+        index += 1
+        if index > 2:
+            break
         if link != "None":
             valid_url_found = False
             driver.get(link)
@@ -101,11 +104,8 @@ def image_downloader(img_links, folder_name, username=''):
             os.chdir(folder)
         except:
             print("Error in changing directory.")
-        index = 0
+
         for link in img_links:
-            index = index + 1
-            if index >= 21:
-                break
             img_name = "None"
             if link != "None":
                 img_name = (link.split('.jpg')[0]).split('/')[-1] + '.jpg'
@@ -184,9 +184,6 @@ def buildDisplayText(status, work):
     # resourse.append(appliancesKeywords.split(","))
     # resourse.append(autoGameKeywords.split(","))
 
-    numberOfKey = 0
-    count = 0
-
     for word in foodKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "food;"
@@ -249,6 +246,8 @@ def buildDisplayText(status, work):
 
 
 def getNumberFromThousand(x):
+    if not x:
+        return 0
     numberOfValue = x.rsplit('k', 1)
     if len(numberOfValue) > 1:
         return float(numberOfValue[0] * 1000)
@@ -457,26 +456,36 @@ def extract_and_write_posts(elements, filename):
                     type = "others"
 
                 if not isinstance(title, str):
-                    title = title.text
+                    title = title.text.strip()
 
                 if not isinstance(reaction, str):
                     reaction = reaction.text
 
                 if not isinstance(commentno, str):
-                    commentno = commentno.text
+                    if commentno.text.find("Comments") != -1:
+                        commentno = commentno.text.replace(
+                            "Comments", " ").strip()
+                    elif commentno.text.find("Comment") != -1:
+                        commentno = commentno.text.replace(
+                            "Comment", " ").strip()
 
                 if not isinstance(share, str):
-                    share = share.text
+                    if share.text.find("Shares") != -1:
+                        share = share.text.replace("Shares", " ").strip()
+                    elif share.text.find("Share") != -1:
+                        share = share.text.replace("Share", " ").strip()
 
                 status = status.replace("\n", " ")
                 title = title.replace("\n", " ")
                 reaction = reaction.replace("\n", " ")
                 commentno = commentno.replace("\n", " ")
                 share = share.replace("\n", " ")
-
-                numberOfCommentTotal += getNumberFromThousand(commentno)
-                numberOfReactionTotal += getNumberFromThousand(reaction)
-                numberOfShareTotal += getNumberFromThousand(share)
+                cm = getNumberFromThousand(commentno)
+                rea = getNumberFromThousand(reaction)
+                sh = getNumberFromThousand(share)
+                numberOfCommentTotal += cm
+                numberOfReactionTotal += rea
+                numberOfShareTotal += sh
 
                 if(indexOfPost <= 5):
                     influencerObject["Post" +
@@ -487,6 +496,15 @@ def extract_and_write_posts(elements, filename):
                                      str(indexOfPost)]["Title"]["Text"] = title
                     influencerObject["Post" +
                                      str(indexOfPost)]["Status"]["Text"] = status
+
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["NumberOfComment"]["Text"] = cm
+
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["NumberOfReaction"]["Text"] = rea
+                                     
+                    influencerObject["Post" +
+                                     str(indexOfPost)]["NumberOfShare"]["Text"] = sh
 
                 line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reaction) + ' | ' + str(commentno) + ' | ' + str(share) + ' | ' + str(
                     link) + "\n"
@@ -766,7 +784,7 @@ def scrap_profile(ids):
         print("----------------------------------------")
         print("About:")
         # setting parameters for scrape_data() to scrap the about section
-        scan_list = [None] * 7
+        scan_list = [None] * 1
         section = ["/about?section=education"]
         elements_path = [
             "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
