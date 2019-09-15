@@ -5,6 +5,7 @@ import sys
 import urllib.request
 import time
 import json
+import requests
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
@@ -15,7 +16,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-
+tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
+    'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
+}, headers={'Content-Type': 'application/x-www-form-urlencoded', }
+)
 
 # Global Variables
 
@@ -55,7 +59,6 @@ autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe c
 influencerObject = json.loads(json_string)
 numberOfPost = []
 displayText = ""
-workEducation = ""
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
@@ -65,7 +68,7 @@ def get_facebook_images_url(img_links):
     index = 0
     for link in img_links:
         index += 1
-        if index > 2:
+        if index > 20:
             break
         if link != "None":
             valid_url_found = False
@@ -93,7 +96,7 @@ def get_facebook_images_url(img_links):
 # -------------------------------------------------------------
 
 # takes a url and downloads image from that url
-def image_downloader(img_links, folder_name, username=''):
+def image_downloader(img_links, folder_name):
     img_names = []
     photoLinks = []
     try:
@@ -187,61 +190,73 @@ def buildDisplayText(status, work):
     for word in foodKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "food;"
+            influencerObject["TitlePart"]["Title"] += "food;"
             break
 
     for word in cosmeticsKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "cosmetics;"
+            influencerObject["TitlePart"]["Title"] += "cosmetics;"
             break
 
     for word in fashionKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "fashion;"
+            influencerObject["TitlePart"]["Title"] += "fashion;"
             break
 
     for word in sportKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "sport;"
+            influencerObject["TitlePart"]["Title"] += "sport;"
             break
 
     for word in travelKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "travel;"
+            influencerObject["TitlePart"]["Title"] += "travel;"
             break
 
     for word in eventKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "event;entertaining;"
+            influencerObject["TitlePart"]["Title"] += "event;entertaining;"
             break
 
     for word in housewifeKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "housewife;"
+            influencerObject["TitlePart"]["Title"] += "housewife;"
             break
 
     for word in technologyKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "app;technology;software;"
+            influencerObject["TitlePart"]["Title"] += "app;technology;software;"
             break
 
     for word in realestateKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "realestate;"
+            influencerObject["TitlePart"]["Title"] += "realestate;"
             break
 
     for word in furnitureKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "furniture;"
+            influencerObject["TitlePart"]["Title"] += "furniture;"
             break
 
     for word in appliancesKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "appliances;"
+            influencerObject["TitlePart"]["Title"] += "appliances;"
             break
 
     for word in autoGameKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
             influencerObject["DisplayText"] += "auto;game"
+            influencerObject["TitlePart"]["Title"] += "auto;game"
             break
 
 
@@ -498,13 +513,13 @@ def extract_and_write_posts(elements, filename):
                                      str(indexOfPost)]["Status"]["Text"] = status
 
                     influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfComment"]["Text"] = cm
+                                     str(indexOfPost)]["NumberOfComment"]["Text"] = getThoundsandFromNumber(cm)
 
                     influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfReaction"]["Text"] = rea
-                                     
+                                     str(indexOfPost)]["NumberOfReaction"]["Text"] = getThoundsandFromNumber(rea)
+
                     influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfShare"]["Text"] = sh
+                                     str(indexOfPost)]["NumberOfShare"]["Text"] = getThoundsandFromNumber(sh)
 
                 line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reaction) + ' | ' + str(commentno) + ' | ' + str(share) + ' | ' + str(
                     link) + "\n"
@@ -524,7 +539,7 @@ def extract_and_write_posts(elements, filename):
             numberOfShareTotal)
         influencerObject["Influencer"]["NumberOfPost"]["Value"] = len(elements)
 
-        buildDisplayText(status, workEducation)
+        buildDisplayText(status, influencerObject["Influencer"]["Description"]["Text"])
 
         f.close()
     except:
@@ -538,7 +553,7 @@ def extract_and_write_posts(elements, filename):
 # -------------------------------------------------------------
 
 
-def save_to_file(name, elements, status, current_section, username=''):
+def save_to_file(name, elements, status, current_section):
     """helper function used to save links to files"""
 
     # status 0 = dealing with friends list
@@ -578,7 +593,7 @@ def save_to_file(name, elements, status, current_section, username=''):
                     print("Downloading " + folder_names[current_section])
 
                     img_names = image_downloader(
-                        background_img_links, folder_names[current_section], username)
+                        background_img_links, folder_names[current_section])
 
                 else:
                     img_names = ["None"] * len(results)
@@ -602,9 +617,9 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         # dealing with About Section
         elif status == 3:
-            workEducation = elements[0].text
+            workEducation = elements[0].text.replace("\n", "|")
             influencerObject["Influencer"]["Description"]["Text"] = workEducation
-            f.writelines(workEducation)
+            # f.writelines(workEducation)
 
         # dealing with Posts
         elif status == 4:
@@ -626,19 +641,23 @@ def save_to_file(name, elements, status, current_section, username=''):
                 f.writelines(img_names[i])
                 f.write('\n')
 
-        elif status == 1:
-            print(results)
-            for i in range(len(results)):
-                # image's link
-                f.writelines(results[i])
-                f.write(',')
+        # elif status == 1:
+        #     print(results)
+        #     for i in range(len(results)):
+        #         # image's link
+        #         f.writelines(results[i])
+        #         f.write(',')
 
-                # downloaded picture id
-                f.writelines(img_names[i])
-                f.write('\n')
+        #         # downloaded picture id
+        #         f.writelines(img_names[i])
+        #         f.write('\n')
 
         elif status == 2:
+            index = 0
             for x in results:
+                index += 1
+                if index > 10:
+                    break
                 videoLinks.append(x)
                 f.writelines(x + "\n")
             influencerObject["Influencer"]["VideoLink"]["Paths"] = videoLinks
@@ -658,7 +677,6 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
     page = []
     folder = os.path.join(os.getcwd(), "Data")
-    username = id.split('/')[-1]
 
     if save_status == 4:
         page.append(id)
@@ -685,7 +703,7 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
 
             data = driver.find_elements_by_xpath(elements_path[i])
 
-            save_to_file(file_names[i], data, save_status, i, username)
+            save_to_file(file_names[i], data, save_status, i)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
@@ -733,16 +751,26 @@ def scrap_profile(ids):
         url = driver.current_url
         id = create_original_link(url)
 
+        userName = id.rsplit('/')[-1]
+
+        influencerObject["DisplayText"] += userName + ";"
+        influencerObject["TitlePart"]["Title"] += userName + ";"
+
         print("\nScraping:", id)
 
         followerSpan = driver.find_element_by_xpath(
             "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
+        
+        followerSpanText = followerSpan.text.replace("Followers","")
+
+        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpanText.strip()
 
         fullNameHref = driver.find_element_by_xpath(
             "//*[@id='fb-timeline-cover-name']/a")
         influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
-
+        influencerObject["DisplayText"] += fullNameHref.text + ";"
+        influencerObject["TitlePart"]["Title"] += userName + ";"
+        
         try:
             target_dir = os.path.join(folder, id.split('/')[-1])
             create_folder(target_dir)
@@ -811,6 +839,14 @@ def scrap_profile(ids):
         print("Posts(Statuses) Done!")
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
+
+    tokenObject = json.loads(tokenResponse.content)
+    tokenAuthorization = tokenObject['token_type'] + \
+        " " + tokenObject['access_token']
+    # insert influencer
+    # influencerJson = json.dumps(influencerObject)
+    influencerResponse = requests.post('https://localhost:44300/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
+                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
