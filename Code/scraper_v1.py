@@ -263,9 +263,9 @@ def buildDisplayText(status, work):
 def getNumberFromThousand(x):
     if not x:
         return 0
-    numberOfValue = x.rsplit('k', 1)
+    numberOfValue = x.lower().rsplit('k', 1)
     if len(numberOfValue) > 1:
-        return float(numberOfValue[0] * 1000)
+        return float(numberOfValue[0]) * 1000
     else:
         return float(numberOfValue[0])
 
@@ -930,7 +930,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('D:\\workspace\\Ultimate-Facebook-Scraper\\Code\\credentials.txt') as f:
+    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 

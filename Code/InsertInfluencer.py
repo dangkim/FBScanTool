@@ -38,3 +38,8 @@ displayText = "ribisach66"
 parsed_json["DisplayText"] = displayText
 
 print(parsed_json["DisplayText"])
+
+bbb = '{{influencer(where: {{displayText_contains: "{0}" }}){{checkInfullNameemaildescriptiongenderDemorgraphic {{  genderGraphicName  genderPercentage}}geoDemorgraphic {{  geoGraphicName  geoPercentage}}videoLink {{    paths  }}numberOfFollowersnumberOfPostnumberOfSharenumberOfReactionnumberOfCommentageDemorgraphic {{  ageGraphicsName  agePercentage}}photo {{  paths}}post1 {{    link    numberOfComment    numberOfReaction    numberOfShare    status    time    title    type  }}  post2 {{    link    numberOfComment    numberOfReaction    numberOfShare    status    time    title    type  }}  post3 {{    link    numberOfComment    numberOfReaction    numberOfShare    status    time    title    type  }}  post4 {{    numberOfComment    numberOfReaction    link    numberOfShare    status    time    title    type  }}  post5 {{    link    numberOfComment    numberOfReaction    numberOfShare    status    time    title    type  }}}}        }}'.format('kieutrinhxiu')
+# {influencer(where: {displayText: "kieutrinhxiu"}) {    checkIn    createdUtc  }}
+aaa = '{{influencer(where: {{displayText: "{0}" }}) {{ checkIn    createdUtc  }} }}'.format('kieutrinhxiu')
+print(bbb)
