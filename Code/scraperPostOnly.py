@@ -35,7 +35,7 @@ download_friends_photos = False
 friends_small_size = True
 photos_small_size = False
 
-total_scrolls = 15
+total_scrolls = 20
 current_scrolls = 0
 scroll_time = 10
 
@@ -199,122 +199,117 @@ def extract_and_write_posts(elements, filename):
         for x in elements:
             try:
                 indexOfPost += 1
-                if(indexOfPost > 5):
-                    break
-                else:
-                    video_link = " "
-                    title = " "
-                    status = " "
-                    link = ""
-                    img = " "
-                    time = " "
-                    reaction = " "
-                    commentno = " "
-                    share = " "
 
-                    # share
-                    share = get_share(x)
+                video_link = " "
+                title = " "
+                status = " "
+                link = ""
+                img = " "
+                time = " "
+                reaction = " "
+                commentno = " "
+                share = " "
 
-                    # commentno
-                    commentno = get_commentno(x)
+                # share
+                share = get_share(x)
 
-                    # reaction
-                    reaction = get_reaction(x)
+                # commentno
+                commentno = get_commentno(x)
 
-                    # time
-                    time = get_time(x)
+                # reaction
+                reaction = get_reaction(x)
 
-                    # title
+                # time
+                time = get_time(x)
+
+                # title
+                title = get_title(x)
+                if title.text.find("shared a memory") != -1:
+                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
                     title = get_title(x)
-                    if title.text.find("shared a memory") != -1:
-                        x = x.find_element_by_xpath(
-                            ".//div[@class='_1dwg _1w_m']")
-                        title = get_title(x)
 
-                    status = get_status(x)
-                    if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
-                        if status == '':
-                            temp = get_div_links(x, "img")
-                            if temp == '':  # no image tag which means . it is not a life event
-                                link = get_div_links(
-                                    x, "a").get_attribute('href')
-                                type = "status update without text"
-                            else:
-                                type = 'life event'
-                                link = get_div_links(
-                                    x, "a").get_attribute('href')
-                                status = get_div_links(x, "a").text
+                status = get_status(x)
+                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
+                    if status == '':
+                        temp = get_div_links(x, "img")
+                        if temp == '':  # no image tag which means . it is not a life event
+                            link = get_div_links(x, "a").get_attribute('href')
+                            type = "status update without text"
                         else:
-                            type = "status update"
-                            if get_div_links(x, "a") != '':
-                                link = get_div_links(
-                                    x, "a").get_attribute('href')
-
-                    elif title.text.find(" shared ") != -1:
-
-                        x1, link = get_title_links(title)
-                        type = "shared " + x1
-
-                    elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
-                        if title.text.find(" at ") != -1:
-                            x1, link = get_title_links(title)
-                            type = "check in"
-                        elif title.text.find(" in ") != 1:
+                            type = 'life event'
+                            link = get_div_links(x, "a").get_attribute('href')
                             status = get_div_links(x, "a").text
-
-                    elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
-                        type = "added photo"
-                        link = get_div_links(x, "a").get_attribute('href')
-
-                    elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
-                        type = "added video"
-                        link = get_div_links(x, "a").get_attribute('href')
-
                     else:
-                        type = "others"
+                        type = "status update"
+                        if get_div_links(x, "a") != '':
+                            link = get_div_links(x, "a").get_attribute('href')
 
-                    if not isinstance(title, str):
-                        title = title.text.strip()
+                elif title.text.find(" shared ") != -1:
 
-                    if not isinstance(reaction, str):
-                        reaction = reaction.text
+                    x1, link = get_title_links(title)
+                    type = "shared " + x1
 
-                    if not isinstance(commentno, str):
-                        if commentno.text.find("Comments") != -1:
-                            commentno = commentno.text.replace(
-                                "Comments", " ").strip()
-                        elif commentno.text.find("Comment") != -1:
-                            commentno = commentno.text.replace(
-                                "Comment", " ").strip()
+                elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
+                    if title.text.find(" at ") != -1:
+                        x1, link = get_title_links(title)
+                        type = "check in"
+                    elif title.text.find(" in ") != 1:
+                        status = get_div_links(x, "a").text
 
-                    if not isinstance(share, str):
-                        if share.text.find("Shares") != -1:
-                            share = share.text.replace("Shares", " ").strip()
-                        elif share.text.find("Share") != -1:
-                            share = share.text.replace("Share", " ").strip()
+                elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
+                    type = "added photo"
+                    link = get_div_links(x, "a").get_attribute('href')
 
-                    status = status.replace("\n", " ")
-                    title = title.replace("\n", " ")
-                    reaction = reaction.replace("\n", " ")
-                    commentno = commentno.replace("\n", " ")
-                    share = share.replace("\n", " ")
-                    cm = getNumberFromThousand(commentno)
-                    rea = getNumberFromThousand(reaction)
-                    sh = getNumberFromThousand(share)
-                    numberOfCommentTotal += cm
-                    numberOfReactionTotal += rea
-                    numberOfShareTotal += sh
+                elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
+                    type = "added video"
+                    link = get_div_links(x, "a").get_attribute('href')
 
-                    postItem = {
-                        "NumberOfComment": "",
-                        "NumberOfReaction": "",
-                        "NumberOfShare": "",
-                        "Status": "",
-                        "Time": "",
-                        "Title": "",
-                        "Type": ""
-                    }
+                else:
+                    type = "others"
 
+                if not isinstance(title, str):
+                    title = title.text.strip()
+
+                if not isinstance(reaction, str):
+                    reaction = reaction.text
+
+                if not isinstance(commentno, str):
+                    if commentno.text.find("Comments") != -1:
+                        commentno = commentno.text.replace(
+                            "Comments", " ").strip()
+                    elif commentno.text.find("Comment") != -1:
+                        commentno = commentno.text.replace(
+                            "Comment", " ").strip()
+
+                if not isinstance(share, str):
+                    if share.text.find("Shares") != -1:
+                        share = share.text.replace("Shares", " ").strip()
+                    elif share.text.find("Share") != -1:
+                        share = share.text.replace("Share", " ").strip()
+
+                status = status.replace("\n", " ")
+                title = title.replace("\n", " ")
+                reaction = reaction.replace("\n", " ")
+                commentno = commentno.replace("\n", " ")
+                share = share.replace("\n", " ")
+                cm = getNumberFromThousand(commentno)
+                rea = getNumberFromThousand(reaction)
+                sh = getNumberFromThousand(share)
+                numberOfCommentTotal += cm
+                numberOfReactionTotal += rea
+                numberOfShareTotal += sh
+
+                postItem = {
+                    "NumberOfComment": "",
+                    "NumberOfReaction": "",
+                    "NumberOfShare": "",
+                    "Status": "",
+                    "Time": "",
+                    "Title": "",
+                    "Type": ""
+                }
+
+                if(indexOfPost <= 5):
                     postItem['Time'] = time
                     postItem['Type'] = type
                     postItem['Title'] = title
@@ -361,7 +356,6 @@ def extract_and_write_posts(elements, filename):
     return
 
 # -----------------------------------------------------------------------------
-
 
 def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
