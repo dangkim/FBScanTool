@@ -45,15 +45,9 @@ json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Infl
 
 influencerObject = json.loads(json_string)
 
-postModel = []
-
-updatePostModel = {
-    "posts": [],
+videoModel = {
     "contentItemId": "",
-    "numberOfTotalComment": "",
-    "numberOfTotalReaction": "",
-    "numberOfTotalShare": "",
-    "numberOfPost": ""
+    "videoPaths": [],
 }
 
 # ----------------------------------------------------------------------------
@@ -185,176 +179,6 @@ def get_share(x):
     finally:
         return share
 
-# -------------------------------------------------------------
-
-
-def extract_and_write_posts(elements, filename):
-
-    numberOfCommentTotal = 0
-    numberOfReactionTotal = 0
-    numberOfShareTotal = 0
-    indexOfPost = 0
-
-    try:
-        for x in elements:
-            try:
-                indexOfPost += 1
-
-                video_link = " "
-                title = " "
-                status = " "
-                link = ""
-                img = " "
-                time = " "
-                reaction = " "
-                commentno = " "
-                share = " "
-
-                # share
-                share = get_share(x)
-
-                # commentno
-                commentno = get_commentno(x)
-
-                # reaction
-                reaction = get_reaction(x)
-
-                # time
-                time = get_time(x)
-
-                # title
-                title = get_title(x)
-                if title.text.find("shared a memory") != -1:
-                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
-                    title = get_title(x)
-
-                status = get_status(x)
-                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
-                    if status == '':
-                        temp = get_div_links(x, "img")
-                        if temp == '':  # no image tag which means . it is not a life event
-                            link = get_div_links(x, "a").get_attribute('href')
-                            type = "status update without text"
-                        else:
-                            type = 'life event'
-                            link = get_div_links(x, "a").get_attribute('href')
-                            status = get_div_links(x, "a").text
-                    else:
-                        type = "status update"
-                        if get_div_links(x, "a") != '':
-                            link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" shared ") != -1:
-
-                    x1, link = get_title_links(title)
-                    type = "shared " + x1
-
-                elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
-                    if title.text.find(" at ") != -1:
-                        x1, link = get_title_links(title)
-                        type = "check in"
-                    elif title.text.find(" in ") != 1:
-                        status = get_div_links(x, "a").text
-
-                elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
-                    type = "added photo"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
-                    type = "added video"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                else:
-                    type = "others"
-
-                if not isinstance(title, str):
-                    title = title.text.strip()
-
-                if not isinstance(reaction, str):
-                    reaction = reaction.text
-
-                if not isinstance(commentno, str):
-                    if commentno.text.find("Comments") != -1:
-                        commentno = commentno.text.replace(
-                            "Comments", " ").strip()
-                    elif commentno.text.find("Comment") != -1:
-                        commentno = commentno.text.replace(
-                            "Comment", " ").strip()
-
-                if not isinstance(share, str):
-                    if share.text.find("Shares") != -1:
-                        share = share.text.replace("Shares", " ").strip()
-                    elif share.text.find("Share") != -1:
-                        share = share.text.replace("Share", " ").strip()
-
-                status = status.replace("\n", " ")
-                title = title.replace("\n", " ")
-                reaction = reaction.replace("\n", " ")
-                commentno = commentno.replace("\n", " ")
-                share = share.replace("\n", " ")
-                cm = getNumberFromThousand(commentno)
-                rea = getNumberFromThousand(reaction)
-                sh = getNumberFromThousand(share)
-                numberOfCommentTotal += cm
-                numberOfReactionTotal += rea
-                numberOfShareTotal += sh
-
-                postItem = {
-                    "NumberOfComment": "",
-                    "NumberOfReaction": "",
-                    "NumberOfShare": "",
-                    "Status": "",
-                    "Time": "",
-                    "Title": "",
-                    "Type": ""
-                }
-
-                if(indexOfPost <= 5):
-                    postItem['Time'] = time
-                    postItem['Type'] = type
-                    postItem['Title'] = title
-                    postItem['Status'] = status
-
-                    postItem['NumberOfComment'] = getThoundsandFromNumber(cm)
-
-                    postItem['NumberOfReaction'] = getThoundsandFromNumber(rea)
-
-                    postItem['NumberOfShare'] = getThoundsandFromNumber(sh)
-
-                    postModel.append(postItem)
-
-            except:
-                pass
-
-        updatePostModel['posts'] = postModel
-
-        updatePostModel['numberOfTotalComment'] = getThoundsandFromNumber(
-            numberOfCommentTotal)
-
-        updatePostModel['numberOfTotalReaction'] = getThoundsandFromNumber(
-            numberOfReactionTotal)
-
-        updatePostModel['numberOfTotalShare'] = getThoundsandFromNumber(
-            numberOfShareTotal)
-
-        updatePostModel['numberOfPost'] = len(elements)
-
-        # Update to database
-        tokenObject = json.loads(tokenResponse.content)
-        tokenAuthorization = tokenObject['token_type'] + \
-            " " + tokenObject['access_token']
-
-        updatePostModelJson = json.dumps(updatePostModel)
-
-        influencerResponse = requests.post('https://localhost:44300/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
-            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
-
-    except:
-        print("Exception (extract_and_write_posts)",
-              "Status =", sys.exc_info()[0])
-
-    return
-
 # -----------------------------------------------------------------------------
 
 
@@ -436,8 +260,11 @@ def check_height():
 
 def save_to_file(name, elements, status, current_section):
     """helper function used to save links to files"""
+    # status 4 = dealing with posts
     results = []
+
     videoLinks = []
+
     try:
         # dealing with Videos
         if status == 2:
@@ -459,7 +286,10 @@ def save_to_file(name, elements, status, current_section):
                 index += 1
                 if index > 10:
                     break
-            influencerObject["Influencer"]["VideoLink"]["Paths"] = videoLinks
+                videoLinks.append(x)
+
+            videoModel["videoPaths"] = videoLinks
+
     except:
         print("Exception (save_to_file)", "Status =",
               str(status), sys.exc_info()[0])
@@ -534,7 +364,7 @@ def scrap_profile(ids):
 
         result = run_query(query)  # execute query
 
-        updatePostModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
+        videoModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
 
         print("\nScraping:", id)
 
@@ -553,6 +383,15 @@ def scrap_profile(ids):
                     save_status, file_names)
         print("Videos Done!")
         # ----------------------------------------------------------------------------
+
+    tokenObject = json.loads(tokenResponse.content)
+    tokenAuthorization = tokenObject['token_type'] + \
+        " " + tokenObject['access_token']
+    
+    videoModelJson = json.dumps(videoModel)
+    
+    influencerResponse = requests.post('https://localhost:44300/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
+                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
