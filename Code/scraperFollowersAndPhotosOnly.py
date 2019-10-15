@@ -46,13 +46,14 @@ json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Infl
 influencerObject = json.loads(json_string)
 
 followerAndPhotoModel = {
-    "ContentItemId" : "",
-    "PhotoPaths" : [],
-    "NumberOfFollowers" : 0
+    "ContentItemId": "",
+    "PhotoPaths": [],
+    "NumberOfFollowers": 0
 }
 
 # ----------------------------------------------------------------------------
 # -------------------------------------------------------------
+
 
 def get_facebook_images_url(img_links):
     urls = []
@@ -179,12 +180,12 @@ def image_downloader(img_links, folder_name):
 
         tokenObject = json.loads(tokenResponse.content)
         tokenAuthorization = tokenObject['token_type'] + \
-        " " + tokenObject['access_token']
+            " " + tokenObject['access_token']
 
         followerAndPhotoModelJson = json.dumps(followerAndPhotoModel)
 
         influencerResponse = requests.post('https://localhost:44300/api/content/UpdateFollowerAndPhoto', verify=False, data=followerAndPhotoModelJson, headers={
-                                        'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
         os.chdir(parent)
     except:
@@ -308,7 +309,7 @@ def run_query(query):
 
     request = requests.post('http://dangkim:8089/api/graphql', json={'query': query}, headers={
         'Authorization': tokenAuthorization})
-    
+
     if request.status_code == 200:
         return request.json()
     else:
@@ -338,7 +339,7 @@ def scrap_profile(ids):
         }}'''.format(userName)
 
         result = run_query(query)  # execute query
-        
+
         followerAndPhotoModel['ContentItemId'] = result['data']['influencer'][0]['contentItemId']
         # make_followerAndPhotoModel(result)
 
@@ -349,14 +350,23 @@ def scrap_profile(ids):
 
         print("\nScraping:", id)
 
-        followerSpan = driver.find_element_by_xpath(
-            "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-        # influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
-        
-        followerSpanText = followerSpan.text.replace("Followers","")
-        followerSpanText = followerSpanText.replace(",","")
+        try:
+            followerSpan = driver.find_element_by_xpath(
+                "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+            followerSpanText = followerSpan.text.replace("Followers", "")
+            followerSpanText = followerSpanText.replace(",", "")
+        except NoSuchElementException:
+            followerSpan = driver.find_element_by_xpath(
+                "//*[@id='PagesProfileHomeSecondaryColumnPagelet']/div/div[3]/div/div[1]/div[4]/div/div[2]/div")
+            followerSpanText = followerSpan.text.replace(
+                "people follow this", "")
+            followerSpanText = followerSpanText.replace(",", "")
+            # print("Element not found")
 
-        followerAndPhotoModel['NumberOfFollowers'] = int(followerSpanText.strip())
+        # //*[@id="PagesProfileHomeSecondaryColumnPagelet"]/div/div[3]/div/div[1]/div[4]/div/div[2]/div
+
+        followerAndPhotoModel['NumberOfFollowers'] = int(
+            followerSpanText.strip())
         print(followerSpan.text)
         # ----------------------------------------------------------------------------
 
@@ -373,7 +383,7 @@ def scrap_profile(ids):
         scrape_data(id, scan_list, section, elements_path,
                     save_status, file_names)
         print("Photos Done!")
-    
+
     print("\nProcess Completed.")
 
     # ----------------------------------------------------------------------------
