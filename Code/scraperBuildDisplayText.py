@@ -35,21 +35,21 @@ download_friends_photos = False
 friends_small_size = True
 photos_small_size = False
 
-total_scrolls = 15
-current_scrolls = 10
-scroll_time = 5
+total_scrolls = 20
+current_scrolls = 0
+scroll_time = 10
 
 old_height = 0
 
 json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Influencer","DisplayText":"","Latest":true,"Published":true,"ModifiedUtc":"","PublishedUtc":"","CreatedUtc":"","Owner":"admin","Author":"admin","Influencer":{"Description":{"Text":""},"Photo":{"Paths":[],"Urls":[]},"Fanpage":{"Text":""},"Email":{"Text":""},"password":{"Text":""},"FullName":{"Text":""},"ShareLink":{"Text":""},"PostImage":{"Text":""},"LiveStream":{"Text":""},"CheckIn":{"Text":""},"Video":{"Text":""},"Phone":{"Text":""},"NumberOfLike":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfLove":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"VideoLink":{"Paths":[]},"NumberOfPost":{"Value":0},"NumberOfFollowers":{"Value":0}},"TitlePart":{"Title":""},"MyCustomPart":{"NumberOfComment":{"Text":""}},"AgeDemorgraphic":{"Percentage":{"Text":""},"AgeGraphicsName":{"Text":""},"AgePercentage":{"Text":""}},"GenderDemorgraphic":{"GenderPercentage":{"Text":""},"GenderGraphicName":{"Text":""}},"GeoDemorgraphic":{"GeoPercentage":{"Text":""},"GeoGraphicName":{"Text":""}},"Post1":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post2":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post3":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post4":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post5":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}}}'
 
-foodKeywords = "Ăn,uống,nấu,nướng,chiên,xào,hấp,quán,xiên,luộc,bữa,dao,muỗng,nĩa,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,gánh,bánh,cơm,nguội,khói,hổi,dĩa,tô,chén,bếp,lò,than,củi,ngon,dở,nồi,niêu,lửa,củi,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,dai,giòn,bổ,bổ dưỡng,rau,quả,nước tương,xì dầu,mì,bưng,hủ tiếu"
-cosmeticsKeywords = "môi,son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
-fashionKeywords = "quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vóc,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,lót,bikini,xa xỉ,đẳng cấp,tóc,che khuyến điểm"
+foodKeywords = "Bún Bò Huế,măm măm,món ngon,nấu cơm,Ăn,uống,nấu,nướng,chiên,xào,hấp,quán,xiên,luộc,bữa,dao,muỗng,nĩa,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,gánh,bánh,cơm,nguội,khói,hổi,dĩa,tô,chén,bếp,lò,than,củi,ngon,dở,nồi,niêu,lửa,củi,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,dai,giòn,bổ,bổ dưỡng,rau,quả,nước tương,xì dầu,mì,bưng,hủ tiếu"
+cosmeticsKeywords = "da xinh,gầy,sần sùi,hair,mái tóc,môi,son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
+fashionKeywords = "hair,salon,mái tóc,diện,kính,sành điệu,Miss Teen,quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vóc,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,lót,bikini,xa xỉ,đẳng cấp,tóc,che khuyến điểm"
 sportKeywords = "gym,yoga,tập,năng động,thể thao,thể dục"
-travelKeywords = "nắng,mưa,hè,thu,check in,xuân,đông,khách sạn,hotel,nhà nghỉ,cảnh,cảnh đẹp,hùng vĩ,thiên nhiên,ồn,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
-eventKeywords = "giải trí,Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
-housewifeKeywords = "con,con cái,bỉm,sữa,tã,núc,lò,nướng,bếp,nhà,cửa,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
+travelKeywords = "tham quan,đi chơi,chuyến đi,nắng,mưa,hè,thu,check in,xuân,đông,khách sạn,hotel,nhà nghỉ,cảnh,cảnh đẹp,hùng vĩ,thiên nhiên,ồn,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
+eventKeywords = "Singer,Faptv,Television,Entertainment,model,actor,Actor Comedy,giải trí,Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
+housewifeKeywords = "nấu cơm,món ngon,con cái,bỉm,sữa,tã,lò,nướng,bếp,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
 technologyKeywords = "down,down load,store,android,ios,phiên bản,software,phần mềm,soft,điện thoại,nhân tạo,công nghệ,kỹ thuật,app"
 realestateKeywords = "nhà,đất,động sản,sổ đỏ,sổ hồng,chung cư,tầng,lầu,cầu thang,biệt thự,giấy tờ,chính chủ,quy hoạch,bản đồ,vay vốn,vốn"
 furnitureKeywords = "bàn,ghế,giường,kệ tivi,tủ,salon,sofa,kệ trang,đèn,đồng hồ,gối,thảm,tranh,két sắt"
@@ -59,6 +59,12 @@ autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe c
 influencerObject = json.loads(json_string)
 numberOfPost = []
 displayText = ""
+workEducation = ""
+
+displayTextModel = {
+    "contentItemId": "",
+    "displayText": ""
+}
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
@@ -172,96 +178,68 @@ def scroll():
 
 # --Helper Functions for Posts
 
-def buildDisplayText(status, work):
+def buildDisplayText(userName, status, work):
+    displayTextModel['displayText'] = userName + ";"
+
     for word in foodKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "food;"
-            influencerObject["TitlePart"]["Title"] += "food;"
+            displayTextModel['displayText'] += "food;"
             break
 
     for word in cosmeticsKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "cosmetics;"
-            influencerObject["TitlePart"]["Title"] += "cosmetics;"
+            displayTextModel['displayText'] += "cosmetics;"
             break
 
     for word in fashionKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "fashion;"
-            influencerObject["TitlePart"]["Title"] += "fashion;"
+            displayTextModel['displayText'] += "fashion;"
             break
 
     for word in sportKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "sport;"
-            influencerObject["TitlePart"]["Title"] += "sport;"
+            displayTextModel['displayText'] += "sport;"
             break
 
     for word in travelKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "travel;"
-            influencerObject["TitlePart"]["Title"] += "travel;"
+            displayTextModel['displayText'] += "travel;"
             break
 
     for word in eventKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "event;entertaining;"
-            influencerObject["TitlePart"]["Title"] += "event;entertaining;"
+            displayTextModel['displayText'] += "event;entertaining;"
             break
 
     for word in housewifeKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "housewife;"
-            influencerObject["TitlePart"]["Title"] += "housewife;"
+            displayTextModel['displayText'] += "housewife;"
             break
 
     for word in technologyKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "app;technology;software;"
-            influencerObject["TitlePart"]["Title"] += "app;technology;software;"
+            displayTextModel['displayText'] += "app;technology;software;"
             break
 
     for word in realestateKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "realestate;"
-            influencerObject["TitlePart"]["Title"] += "realestate;"
+            displayTextModel['displayText'] += "realestate;"
             break
 
     for word in furnitureKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "furniture;"
-            influencerObject["TitlePart"]["Title"] += "furniture;"
+            displayTextModel['displayText'] += "furniture;"
             break
 
     for word in appliancesKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "appliances;"
-            influencerObject["TitlePart"]["Title"] += "appliances;"
+            displayTextModel['displayText'] += "appliances;"
             break
 
     for word in autoGameKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            influencerObject["DisplayText"] += "auto;game"
-            influencerObject["TitlePart"]["Title"] += "auto;game"
+            displayTextModel['displayText'] += "auto;game"
             break
-
-
-def getNumberFromThousand(x):
-    if not x:
-        return 0
-    numberOfValue = x.lower().rsplit('k', 1)
-    if len(numberOfValue) > 1:
-        return float(numberOfValue[0]) * 1000
-    else:
-        return float(numberOfValue[0])
-
-
-def getThoundsandFromNumber(x):
-    if x >= 1100:
-        stringValue = str(x/1000) + 'k'
-        return stringValue
-    else:
-        return str(x)
 
 
 def get_status(x):
@@ -286,11 +264,6 @@ def get_div_links(x, tag):
         return ""
 
 
-def get_title_links(title):
-    l = title.find_elements_by_tag_name('a')
-    return l[-1].text, l[-1].get_attribute('href')
-
-
 def get_title(x):
     title = ""
     try:
@@ -307,217 +280,27 @@ def get_title(x):
         return title
 
 
-def get_time(x):
-    time = ""
-    try:
-        time = x.find_element_by_tag_name('abbr').get_attribute('title')
-        time = str("%02d" % int(time.split(", ")[1].split()[1]), ) + "-" + str(
-            ("%02d" % (int((list(calendar.month_abbr).index(time.split(", ")[1].split()[0][:3]))),))) + "-" + \
-            time.split()[3] + " " + str("%02d" % int(time.split()[5].split(":")[0])) + ":" + str(
-            time.split()[5].split(":")[1])
-    except:
-        pass
-
-    finally:
-        return time
-
-
-def get_reaction(x):
-    reaction = ""
-    try:
-        reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
-    except:
-        try:
-            reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
-        except:
-            try:
-                reaction = x.find_element_by_xpath(".//span[@class='_81hb']")
-            except:
-                pass
-    finally:
-        return reaction
-
-
-def get_commentno(x):
-    commentno = ""
-    try:
-        commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
-    except:
-        try:
-            commentno = x.find_element_by_xpath(
-                ".//span[@class='_1whp _4vn2']")
-        except:
-            try:
-                commentno = x.find_element_by_xpath(
-                    ".//span[@class='_1whp _4vn2']")
-            except:
-                pass
-    finally:
-        return commentno
-
-
-def get_share(x):
-    share = ""
-    try:
-        share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
-    except:
-        try:
-            share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
-        except:
-            try:
-                share = x.find_element_by_xpath(
-                    ".//span[@class='_355t _4vn2']")
-            except:
-                pass
-    finally:
-        return share
-
-
-def extract_and_write_posts(elements, filename, workEducation):
+def extract_and_write_posts(userName, elements, filename, workEducation):
 
     numberOfCommentTotal = 0
     numberOfReactionTotal = 0
     numberOfShareTotal = 0
     indexOfPost = 0
-
-    try:       
+    allStatus = ""
+    try:
         for x in elements:
             try:
-                indexOfPost += 1
-
-                video_link = " "
-                title = " "
                 status = " "
-                link = ""
-                img = " "
-                time = " "
-                reaction = " "
-                commentno = " "
-                share = " "
-
-                # share
-                share = get_share(x)
-
-                # commentno
-                commentno = get_commentno(x)
-
-                # reaction
-                reaction = get_reaction(x)
-
-                # time
-                time = get_time(x)
-
-                # title
-                title = get_title(x)
-                if title.text.find("shared a memory") != -1:
-                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
-                    title = get_title(x)
 
                 status = get_status(x)
-                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
-                    if status == '':
-                        temp = get_div_links(x, "img")
-                        if temp == '':  # no image tag which means . it is not a life event
-                            link = get_div_links(x, "a").get_attribute('href')
-                            type = "status update without text"
-                        else:
-                            type = 'life event'
-                            link = get_div_links(x, "a").get_attribute('href')
-                            status = get_div_links(x, "a").text
-                    else:
-                        type = "status update"
-                        if get_div_links(x, "a") != '':
-                            link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" shared ") != -1:
-
-                    x1, link = get_title_links(title)
-                    type = "shared " + x1
-
-                elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
-                    if title.text.find(" at ") != -1:
-                        x1, link = get_title_links(title)
-                        type = "check in"
-                    elif title.text.find(" in ") != 1:
-                        status = get_div_links(x, "a").text
-
-                elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
-                    type = "added photo"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
-                    type = "added video"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                else:
-                    type = "others"
-
-                if not isinstance(title, str):
-                    title = title.text.strip()
-
-                if not isinstance(reaction, str):
-                    reaction = reaction.text
-
-                if not isinstance(commentno, str):
-                    if commentno.text.find("Comments") != -1:
-                        commentno = commentno.text.replace(
-                            "Comments", " ").strip()
-                    elif commentno.text.find("Comment") != -1:
-                        commentno = commentno.text.replace(
-                            "Comment", " ").strip()
-
-                if not isinstance(share, str):
-                    if share.text.find("Shares") != -1:
-                        share = share.text.replace("Shares", " ").strip()
-                    elif share.text.find("Share") != -1:
-                        share = share.text.replace("Share", " ").strip()
 
                 status = status.replace("\n", " ")
-                title = title.replace("\n", " ")
-                reaction = reaction.replace("\n", " ")
-                commentno = commentno.replace("\n", " ")
-                share = share.replace("\n", " ")
-                cm = getNumberFromThousand(commentno)
-                rea = getNumberFromThousand(reaction)
-                sh = getNumberFromThousand(share)
-                numberOfCommentTotal += cm
-                numberOfReactionTotal += rea
-                numberOfShareTotal += sh
 
-                if(indexOfPost <= 5):
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["Time"]["Text"] = time
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["Type"]["Text"] = type
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["Title"]["Text"] = title
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["Status"]["Text"] = status
-
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfComment"]["Text"] = getThoundsandFromNumber(cm)
-
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfReaction"]["Text"] = getThoundsandFromNumber(rea)
-
-                    influencerObject["Post" +
-                                     str(indexOfPost)]["NumberOfShare"]["Text"] = getThoundsandFromNumber(sh)
-
-                line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reaction) + ' | ' + str(commentno) + ' | ' + str(share) + ' | ' + str(
-                    link) + "\n"
-
+                allStatus += " " + status
             except:
                 pass
 
-        influencerObject["Influencer"]["NumberOfComment"]["Text"] = getThoundsandFromNumber(
-            numberOfCommentTotal)
-        influencerObject["Influencer"]["NumberOfReaction"]["Text"] = getThoundsandFromNumber(
-            numberOfReactionTotal)
-        influencerObject["Influencer"]["NumberOfShare"]["Text"] = getThoundsandFromNumber(
-            numberOfShareTotal)
-        influencerObject["Influencer"]["NumberOfPost"]["Value"] = len(elements)
-
-        buildDisplayText(status, influencerObject["Influencer"]["Description"]["Text"])
+        buildDisplayText(userName, allStatus, workEducation)
 
     except:
         print("Exception (extract_and_write_posts)",
@@ -527,6 +310,7 @@ def extract_and_write_posts(elements, filename, workEducation):
 
 # -------------------------------------------------------------
 
+
 def save_to_file(name, elements, status, current_section):
     """helper function used to save links to files"""
 
@@ -534,23 +318,42 @@ def save_to_file(name, elements, status, current_section):
         results = []
         img_names = []
         videoLinks = []
-        workEducation = ""
 
         # dealing with About Section
         if status == 3:
             workEducation = elements[0].text.replace("\n", "|")
-            # influencerObject["Influencer"]["Description"]["Text"] = workEducation
 
         # dealing with Posts
         elif status == 4:
             extract_and_write_posts(elements, name, workEducation)
             return
-        
+
+    except:
+        print("Exception (save_to_file)", "Status =",
+              str(status), sys.exc_info()[0])
+
+    return workEducation
+
+
+def save_post(userName, name, elements, status, current_section, workEducation):
+    """helper function used to save links to files"""
+
+    try:
+        results = []
+        img_names = []
+        videoLinks = []
+
+        # dealing with Posts
+        if status == 4:
+            extract_and_write_posts(userName, elements, name, workEducation)
+            return
+
     except:
         print("Exception (save_to_file)", "Status =",
               str(status), sys.exc_info()[0])
 
     return
+
 
 # -----------------------------------------------------------------------------
 
@@ -558,7 +361,42 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
     page = []
     folder = os.path.join(os.getcwd(), "Data")
+    data = []
 
+    for i in range(len(section)):
+        page.append(id + section[i])
+
+    for i in range(len(scan_list)):
+        try:
+            driver.get(page[i])
+
+            if save_status != 3:
+                scroll()
+
+            data = driver.find_elements_by_xpath(elements_path[i])
+
+            if len(data) == 0 and save_status == 3:
+                driver.find_element_by_class_name(
+                    'see_more_link_inner').click()
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".text_exposed_root.text_exposed")))
+                data = driver.find_elements_by_css_selector(
+                    ".text_exposed_root.text_exposed")
+
+            workEducation = save_to_file(file_names[i], data, save_status, i)
+
+        except:
+            print("Exception (scrape_data)", str(i), "Status =",
+                  str(save_status), sys.exc_info()[0])
+
+    return workEducation
+
+
+def scrape_data_post(userName, id, scan_list, section, elements_path, save_status, file_names, workEducation):
+    """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
+    page = []
+    folder = os.path.join(os.getcwd(), "Data")
+    data = []
     if save_status == 4:
         page.append(id)
 
@@ -569,26 +407,22 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
         try:
             driver.get(page[i])
 
-            if (save_status == 0) or (save_status == 1) or (
-                    save_status == 2):  # Only run this for friends, photos and videos
-
-                # the bar which contains all the sections
-                sections_bar = driver.find_element_by_xpath(
-                    "//*[@class='_3cz'][1]/div[2]/div[1]")
-
-                if sections_bar.text.find(scan_list[i]) == -1:
-                    continue
-
             if save_status != 3:
                 scroll()
 
             data = driver.find_elements_by_xpath(elements_path[i])
 
-            save_to_file(file_names[i], data, save_status, i)
+            if len(data) == 0 and save_status == 4:
+                data = driver.find_elements_by_xpath(
+                    '//div[@class="_1dwg _1w_m _q7o"]')
+
+            save_post(userName, file_names[i], data, save_status, i, workEducation)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
                   str(save_status), sys.exc_info()[0])
+
+    return
 
 
 # -----------------------------------------------------------------------------
@@ -619,6 +453,27 @@ def create_folder(folder):
     if not os.path.exists(folder):
         os.mkdir(folder)
 
+# -----------------------------------------------------------------------------
+
+
+def run_query(query):
+
+    # get influencer by userName
+    tokenObject = json.loads(tokenResponse.content)
+    tokenAuthorization = tokenObject['token_type'] + \
+        " " + tokenObject['access_token']
+
+    request = requests.post('http://dangkim:8089/api/graphql', json={'query': query}, headers={
+        'Authorization': tokenAuthorization})
+
+    if request.status_code == 200:
+        return request.json()
+    else:
+        raise Exception("Query failed to run by returning code of {}. {}".format(
+            request.status_code, query))
+
+# -----------------------------------------------------------------------------
+
 
 def scrap_profile(ids):
     folder = os.path.join(os.getcwd(), "Data")
@@ -634,61 +489,18 @@ def scrap_profile(ids):
 
         userName = id.rsplit('/')[-1]
 
-        influencerObject["DisplayText"] += userName + ";"
-        influencerObject["TitlePart"]["Title"] += userName + ";"
+        # The GraphQL query (with a few aditional bits included) itself defined as a multi-line string.
+        query = '''{{
+	        influencer(where: {{displayText_contains: "{0}"}}, status: PUBLISHED) {{
+                contentItemId
+            }} 
+        }}'''.format(userName)
+
+        result = run_query(query)  # execute query
+
+        displayTextModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
 
         print("\nScraping:", id)
-
-        followerSpan = driver.find_element_by_xpath(
-            "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-        
-        followerSpanText = followerSpan.text.replace("Followers","")
-
-        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpanText.strip()
-
-        fullNameHref = driver.find_element_by_xpath(
-            "//*[@id='fb-timeline-cover-name']/a")
-        influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
-        influencerObject["DisplayText"] += fullNameHref.text + ";"
-        influencerObject["TitlePart"]["Title"] += userName + ";"
-        
-        try:
-            target_dir = os.path.join(folder, id.split('/')[-1])
-            create_folder(target_dir)
-            os.chdir(target_dir)
-        except:
-            print("Some error occurred in creating the profile directory.")
-            continue
-
-        print("----------------------------------------")
-        print("Photos..")
-        print("Scraping Links..")
-        # setting parameters for scrape_data() to scrap photos
-        scan_list = ["'s Photos", "Photos of"]
-        section = ["/photos_all", "/photos_of"]
-        elements_path = ["//*[contains(@id, 'pic_')]"] * 2
-        file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
-        save_status = 1
-
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
-        print("Photos Done!")
-
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Videos:")
-        # setting parameters for scrape_data() to scrap videos
-        scan_list = ["'s Videos", "Videos of"]
-        section = ["/videos_by", "/videos_of"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
-        file_names = ["Uploaded Videos.txt", "Tagged Videos.txt"]
-        save_status = 2
-
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
-        print("Videos Done!")
-        # ----------------------------------------------------------------------------
 
         print("----------------------------------------")
         print("About:")
@@ -700,8 +512,8 @@ def scrap_profile(ids):
         file_names = ["Work and Education.txt"]
         save_status = 3
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
+        workEducation = scrape_data(id, scan_list, section, elements_path,
+                                    save_status, file_names)
         print("About Section Done!")
 
         # ----------------------------------------------------------------------------
@@ -715,8 +527,8 @@ def scrap_profile(ids):
         file_names = ["Posts.txt"]
         save_status = 4
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
+        scrape_data_post(userName, id, scan_list, section, elements_path,
+                         save_status, file_names, workEducation)
         print("Posts(Statuses) Done!")
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
@@ -724,10 +536,11 @@ def scrap_profile(ids):
     tokenObject = json.loads(tokenResponse.content)
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
-    # insert influencer
-    # influencerJson = json.dumps(influencerObject)
-    influencerResponse = requests.post('https://localhost:44300/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
-                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+
+    displayTextModelJson = json.dumps(displayTextModel)
+
+    influencerResponse = requests.post('https://localhost:44300/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+        'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
