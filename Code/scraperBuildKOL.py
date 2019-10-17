@@ -35,9 +35,9 @@ download_friends_photos = False
 friends_small_size = True
 photos_small_size = False
 
-total_scrolls = 20
-current_scrolls = 0
-scroll_time = 10
+total_scrolls = 15
+current_scrolls = 10
+scroll_time = 5
 
 old_height = 0
 
@@ -59,88 +59,9 @@ autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe c
 influencerObject = json.loads(json_string)
 numberOfPost = []
 displayText = ""
-workEducation = ""
-
-displayTextModel = {
-    "contentItemId": "",
-    "displayText": ""
-}
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
-
-def get_facebook_images_url(img_links):
-    urls = []
-    index = 0
-    for link in img_links:
-        index += 1
-        if index > 20:
-            break
-        if link != "None":
-            valid_url_found = False
-            driver.get(link)
-
-            try:
-                while not valid_url_found:
-                    WebDriverWait(driver, 30).until(
-                        EC.presence_of_element_located((By.CLASS_NAME, "spotlight")))
-                    element = driver.find_element_by_class_name("spotlight")
-                    img_url = element.get_attribute('src')
-                    print(img_url)
-                    if img_url.find('.gif') == -1:
-                        valid_url_found = True
-                        urls.append(img_url)
-            except:
-                urls.append("None")
-        else:
-            urls.append("None")
-
-    return urls
-
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
-
-# takes a url and downloads image from that url
-def image_downloader(img_links, folder_name):
-    img_names = []
-    photoLinks = []
-    try:
-        parent = os.getcwd()
-        try:
-            folder = os.path.join(os.getcwd(), folder_name)
-            create_folder(folder)
-            os.chdir(folder)
-        except:
-            print("Error in changing directory.")
-
-        for link in img_links:
-            img_name = "None"
-            if link != "None":
-                img_name = (link.split('.jpg')[0]).split('/')[-1] + '.jpg'
-                # img_name = username + '.jpg'
-                # this is the image id when there's no profile pic
-                if img_name == "10354686_10150004552801856_220367501106153455_n.jpg":
-                    img_name = "None"
-                else:
-                    try:
-                        photoLinks.append(link)
-                        # urllib.request.urlretrieve(link, img_name)
-                    except:
-                        img_name = "None"
-            img_names.append(img_name)
-
-        influencerObject["Influencer"]["Photo"]["Paths"] = photoLinks
-
-        os.chdir(parent)
-    except:
-        print("Exception (image_downloader):", sys.exc_info()[0])
-
-    return img_names
-
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
 
 def check_height():
     new_height = driver.execute_script("return document.body.scrollHeight")
@@ -172,73 +93,83 @@ def scroll():
 
     return
 
-
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
 # --Helper Functions for Posts
 
-def buildDisplayText(userName, status, work):
-    displayTextModel['displayText'] = userName + ";"
 
+def buildDisplayText(status, work):
     for word in foodKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "food;"
+            influencerObject["DisplayText"] += "food;"
+            influencerObject["TitlePart"]["Title"] += "food;"
             break
 
     for word in cosmeticsKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "cosmetics;"
+            influencerObject["DisplayText"] += "cosmetics;"
+            influencerObject["TitlePart"]["Title"] += "cosmetics;"
             break
 
     for word in fashionKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "fashion;"
+            influencerObject["DisplayText"] += "fashion;"
+            influencerObject["TitlePart"]["Title"] += "fashion;"
             break
 
     for word in sportKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "sport;"
+            influencerObject["DisplayText"] += "sport;"
+            influencerObject["TitlePart"]["Title"] += "sport;"
             break
 
     for word in travelKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "travel;"
+            influencerObject["DisplayText"] += "travel;"
+            influencerObject["TitlePart"]["Title"] += "travel;"
             break
 
     for word in eventKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "event;entertaining;"
+            influencerObject["DisplayText"] += "event;entertaining;"
+            influencerObject["TitlePart"]["Title"] += "event;entertaining;"
             break
 
     for word in housewifeKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "housewife;"
+            influencerObject["DisplayText"] += "housewife;"
+            influencerObject["TitlePart"]["Title"] += "housewife;"
             break
 
     for word in technologyKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "app;technology;software;"
+            influencerObject["DisplayText"] += "app;technology;software;"
+            influencerObject["TitlePart"]["Title"] += "app;technology;software;"
             break
 
     for word in realestateKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "realestate;"
+            influencerObject["DisplayText"] += "realestate;"
+            influencerObject["TitlePart"]["Title"] += "realestate;"
             break
 
     for word in furnitureKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "furniture;"
+            influencerObject["DisplayText"] += "furniture;"
+            influencerObject["TitlePart"]["Title"] += "furniture;"
             break
 
     for word in appliancesKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "appliances;"
+            influencerObject["DisplayText"] += "appliances;"
+            influencerObject["TitlePart"]["Title"] += "appliances;"
             break
 
     for word in autoGameKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
-            displayTextModel['displayText'] += "auto;game"
+            influencerObject["DisplayText"] += "auto;game"
+            influencerObject["TitlePart"]["Title"] += "auto;game"
             break
 
 
@@ -264,6 +195,11 @@ def get_div_links(x, tag):
         return ""
 
 
+def get_title_links(title):
+    l = title.find_elements_by_tag_name('a')
+    return l[-1].text, l[-1].get_attribute('href')
+
+
 def get_title(x):
     title = ""
     try:
@@ -280,27 +216,68 @@ def get_title(x):
         return title
 
 
-def extract_and_write_posts(userName, elements, filename, workEducation):
-
-    numberOfCommentTotal = 0
-    numberOfReactionTotal = 0
-    numberOfShareTotal = 0
-    indexOfPost = 0
+def extract_and_write_posts(elements, filename):
     allStatus = ""
     try:
         for x in elements:
             try:
+                title = " "
                 status = " "
 
+                # title
+                title = get_title(x)
+                if title.text.find("shared a memory") != -1:
+                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
+                    title = get_title(x)
+
                 status = get_status(x)
+                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
+                    if status == '':
+                        temp = get_div_links(x, "img")
+                        if temp == '':  # no image tag which means . it is not a life event
+                            link = get_div_links(x, "a").get_attribute('href')
+                            type = "status update without text"
+                        else:
+                            type = 'life event'
+                            link = get_div_links(x, "a").get_attribute('href')
+                            status = get_div_links(x, "a").text
+                    else:
+                        type = "status update"
+                        if get_div_links(x, "a") != '':
+                            link = get_div_links(x, "a").get_attribute('href')
+
+                elif title.text.find(" shared ") != -1:
+
+                    x1, link = get_title_links(title)
+                    type = "shared " + x1
+
+                elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
+                    if title.text.find(" at ") != -1:
+                        x1, link = get_title_links(title)
+                        type = "check in"
+                    elif title.text.find(" in ") != 1:
+                        status = get_div_links(x, "a").text
+
+                elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
+                    type = "added photo"
+                    link = get_div_links(x, "a").get_attribute('href')
+
+                elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
+                    type = "added video"
+                    link = get_div_links(x, "a").get_attribute('href')
+
+                else:
+                    type = "others"
 
                 status = status.replace("\n", " ")
 
                 allStatus += " " + status
+
             except:
                 pass
 
-        buildDisplayText(userName, allStatus, workEducation)
+        buildDisplayText(
+            status, influencerObject["Influencer"]["Description"]["Text"])
 
     except:
         print("Exception (extract_and_write_posts)",
@@ -308,41 +285,45 @@ def extract_and_write_posts(userName, elements, filename, workEducation):
 
     return
 
+
+# -------------------------------------------------------------
 # -------------------------------------------------------------
 
 
 def save_to_file(name, elements, status, current_section):
     """helper function used to save links to files"""
+    # status 3 = dealing with about section
+    # status 4 = dealing with posts
 
     try:
-
         # dealing with About Section
         if status == 3:
             workEducation = elements[0].text.replace("\n", "|")
+            influencerObject["Influencer"]["Description"]["Text"] = workEducation
 
         # dealing with Posts
         # elif status == 4:
-        #     extract_and_write_posts(elements, name, workEducation)
+        #     extract_and_write_posts(elements, name)
         #     return
 
     except:
         print("Exception (save_to_file)", "Status =",
               str(status), sys.exc_info()[0])
 
-    return workEducation
+    return
 
 
-def save_post(userName, name, elements, status, current_section, workEducation):
+# ----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+def save_post(name, elements, status, current_section):
     """helper function used to save links to files"""
 
     try:
-        results = []
-        img_names = []
-        videoLinks = []
 
         # dealing with Posts
         if status == 4:
-            extract_and_write_posts(userName, elements, name, workEducation)
+            extract_and_write_posts(elements, name)
             return
 
     except:
@@ -352,6 +333,43 @@ def save_post(userName, name, elements, status, current_section, workEducation):
     return
 
 
+# ----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+def scrape_data_post(id, scan_list, section, elements_path, save_status, file_names):
+    """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
+    page = []
+    folder = os.path.join(os.getcwd(), "Data")
+    data = []
+    if save_status == 4:
+        page.append(id)
+
+    for i in range(len(section)):
+        page.append(id + section[i])
+
+    for i in range(len(scan_list)):
+        try:
+            driver.get(page[i])
+
+            if save_status != 3:
+                scroll()
+
+            data = driver.find_elements_by_xpath(elements_path[i])
+
+            if len(data) == 0 and save_status == 4:
+                data = driver.find_elements_by_xpath(
+                    '//div[@class="_1dwg _1w_m _q7o"]')
+
+            save_post(file_names[i], data, save_status, i)
+
+        except:
+            print("Exception (scrape_data)", str(i), "Status =",
+                  str(save_status), sys.exc_info()[0])
+
+    return
+
+
+# -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
 def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
@@ -380,46 +398,11 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                 data = driver.find_elements_by_css_selector(
                     ".text_exposed_root.text_exposed")
 
-            workEducation = save_to_file(file_names[i], data, save_status, i)
+            save_to_file(file_names[i], data, save_status, i)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
                   str(save_status), sys.exc_info()[0])
-
-    return workEducation
-
-
-def scrape_data_post(userName, id, scan_list, section, elements_path, save_status, file_names, workEducation):
-    """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
-    page = []
-    folder = os.path.join(os.getcwd(), "Data")
-    data = []
-    if save_status == 4:
-        page.append(id)
-
-    for i in range(len(section)):
-        page.append(id + section[i])
-
-    for i in range(len(scan_list)):
-        try:
-            driver.get(page[i])
-
-            if save_status != 3:
-                scroll()
-
-            data = driver.find_elements_by_xpath(elements_path[i])
-
-            if len(data) == 0 and save_status == 4:
-                data = driver.find_elements_by_xpath(
-                    '//div[@class="_1dwg _1w_m _q7o"]')
-
-            save_post(userName, file_names[i], data, save_status, i, workEducation)
-
-        except:
-            print("Exception (scrape_data)", str(i), "Status =",
-                  str(save_status), sys.exc_info()[0])
-
-    return
 
 
 # -----------------------------------------------------------------------------
@@ -450,27 +433,6 @@ def create_folder(folder):
     if not os.path.exists(folder):
         os.mkdir(folder)
 
-# -----------------------------------------------------------------------------
-
-
-def run_query(query):
-
-    # get influencer by userName
-    tokenObject = json.loads(tokenResponse.content)
-    tokenAuthorization = tokenObject['token_type'] + \
-        " " + tokenObject['access_token']
-
-    request = requests.post('http://dangkim:8089/api/graphql', json={'query': query}, headers={
-        'Authorization': tokenAuthorization})
-
-    if request.status_code == 200:
-        return request.json()
-    else:
-        raise Exception("Query failed to run by returning code of {}. {}".format(
-            request.status_code, query))
-
-# -----------------------------------------------------------------------------
-
 
 def scrap_profile(ids):
     folder = os.path.join(os.getcwd(), "Data")
@@ -481,23 +443,33 @@ def scrap_profile(ids):
     for id in ids:
 
         driver.get(id)
-        url = driver.current_url
+        originalUrl = str(driver.current_url)
+        url = originalUrl.rstrip('/')
         id = create_original_link(url)
 
         userName = id.rsplit('/')[-1]
 
-        # The GraphQL query (with a few aditional bits included) itself defined as a multi-line string.
-        query = '''{{
-	        influencer(where: {{displayText_contains: "{0}"}}, status: PUBLISHED) {{
-                contentItemId
-            }} 
-        }}'''.format(userName)
-
-        result = run_query(query)  # execute query
-
-        displayTextModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
+        influencerObject["DisplayText"] += userName + ";"
+        influencerObject["TitlePart"]["Title"] += userName + ";"
 
         print("\nScraping:", id)
+
+        elements = driver.find_elements_by_xpath(
+            "//*[@id='fb-timeline-cover-name']/a")
+
+        if len(elements) == 0:
+            fullNameHref = driver.find_element_by_xpath(
+                "//*[@id='seo_h1_tag']/a/span")
+            influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
+            influencerObject["DisplayText"] += fullNameHref.text + ";"
+            influencerObject["TitlePart"]["Title"] += userName + ";"
+
+        else:
+            fullNameHref = driver.find_element_by_xpath(
+                "//*[@id='fb-timeline-cover-name']/a")
+            influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
+            influencerObject["DisplayText"] += fullNameHref.text + ";"
+            influencerObject["TitlePart"]["Title"] += userName + ";"
 
         print("----------------------------------------")
         print("About:")
@@ -509,8 +481,8 @@ def scrap_profile(ids):
         file_names = ["Work and Education.txt"]
         save_status = 3
 
-        workEducation = scrape_data(id, scan_list, section, elements_path,
-                                    save_status, file_names)
+        scrape_data(id, scan_list, section, elements_path,
+                    save_status, file_names)
         print("About Section Done!")
 
         # ----------------------------------------------------------------------------
@@ -524,8 +496,8 @@ def scrap_profile(ids):
         file_names = ["Posts.txt"]
         save_status = 4
 
-        scrape_data_post(userName, id, scan_list, section, elements_path,
-                         save_status, file_names, workEducation)
+        scrape_data_post(id, scan_list, section, elements_path,
+                         save_status, file_names)
         print("Posts(Statuses) Done!")
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
@@ -533,11 +505,10 @@ def scrap_profile(ids):
     tokenObject = json.loads(tokenResponse.content)
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
-
-    displayTextModelJson = json.dumps(displayTextModel)
-
-    influencerResponse = requests.post('https://localhost:44300/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
-        'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+    # insert influencer
+    # influencerJson = json.dumps(influencerObject)
+    influencerResponse = requests.post('https://localhost:44300/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
+                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
