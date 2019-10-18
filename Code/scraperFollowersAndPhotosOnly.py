@@ -95,11 +95,6 @@ def save_to_file(name, elements, status, current_section, username=''):
     # status 1 = dealing with photos
 
     try:
-        f = None  # file pointer
-
-        if status != 4:
-            f = open(name, 'w', encoding='utf-8', newline='\r\n')
-
         results = []
         img_names = []
 
@@ -122,7 +117,6 @@ def save_to_file(name, elements, status, current_section, username=''):
                         background_img_links = get_facebook_images_url(results)
 
                     folder_names = ["Uploaded Photos", "Tagged Photos"]
-                    print("Downloading " + folder_names[current_section])
 
                     img_names = image_downloader(
                         background_img_links, folder_names[current_section])
@@ -149,14 +143,6 @@ def image_downloader(img_links, folder_name):
     img_names = []
     photoLinks = []
     try:
-        parent = os.getcwd()
-        try:
-            folder = os.path.join(os.getcwd(), folder_name)
-            create_folder(folder)
-            os.chdir(folder)
-        except:
-            print("Error in changing directory.")
-
         for link in img_links:
             img_name = "None"
             if link != "None":
@@ -187,7 +173,6 @@ def image_downloader(img_links, folder_name):
         influencerResponse = requests.post('http://bdo8.com/api/content/UpdateFollowerAndPhoto', verify=False, data=followerAndPhotoModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
-        os.chdir(parent)
     except:
         print("Exception (image_downloader):", sys.exc_info()[0])
 
@@ -200,7 +185,6 @@ def image_downloader(img_links, folder_name):
 def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
     page = []
-    folder = os.path.join(os.getcwd(), "Data")
     username = id.split('/')[-1]
 
     if save_status == 4:
@@ -212,19 +196,6 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     for i in range(len(scan_list)):
         try:
             driver.get(page[i])
-
-            if (save_status == 0) or (save_status == 1) or (
-                    save_status == 2):  # Only run this for friends, photos and videos
-
-                # the bar which contains all the sections
-                sections_bar = driver.find_element_by_xpath(
-                    "//*[@class='_3cz'][1]/div[2]/div[1]")
-
-                if sections_bar.text.find(scan_list[i]) == -1:
-                    continue
-
-            if save_status != 3:
-                scroll()
 
             data = driver.find_elements_by_xpath(elements_path[i])
 
@@ -318,15 +289,13 @@ def run_query(query):
 
 
 def scrap_profile(ids):
-    folder = os.path.join(os.getcwd(), "Data")
-    create_folder(folder)
-    os.chdir(folder)
     urls = []
     userNames = []
     # execute for all profiles given in input.txt file
     for id in ids:
         driver.get(id)
-        url = driver.current_url
+        originalUrl = str(driver.current_url)
+        url = originalUrl.rstrip('/')
         id = create_original_link(url)
 
         userName = id.rsplit('/')[-1]
@@ -355,12 +324,20 @@ def scrap_profile(ids):
                 "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
             followerSpanText = followerSpan.text.replace("Followers", "")
             followerSpanText = followerSpanText.replace(",", "")
+            scan_list = ["Photos of"]
+            section = ["/photos", "/photos_all", "/photos_of"]
+            elements_path = ["//*[contains(@id, 'pic_')]"] * 2
+            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
         except NoSuchElementException:
             followerSpan = driver.find_element_by_xpath(
                 "//*[@id='PagesProfileHomeSecondaryColumnPagelet']/div/div[3]/div/div[1]/div[4]/div/div[2]/div")
             followerSpanText = followerSpan.text.replace(
                 "people follow this", "")
             followerSpanText = followerSpanText.replace(",", "")
+            scan_list = ["All Photos"]
+            section = ["/photos"]
+            elements_path = ["//*[contains(@class, '_2eea')]/a"]
+            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
             # print("Element not found")
 
         # //*[@id="PagesProfileHomeSecondaryColumnPagelet"]/div/div[3]/div/div[1]/div[4]/div/div[2]/div
@@ -374,10 +351,7 @@ def scrap_profile(ids):
         print("Photos..")
         print("Scraping Links..")
         # setting parameters for scrape_data() to scrap photos
-        scan_list = ["'s Photos", "Photos of"]
-        section = ["/photos_all", "/photos_of"]
-        elements_path = ["//*[contains(@id, 'pic_')]"] * 2
-        file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+
         save_status = 1
 
         scrape_data(id, scan_list, section, elements_path,

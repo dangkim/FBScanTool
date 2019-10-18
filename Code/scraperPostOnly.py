@@ -171,6 +171,9 @@ def get_commentno(x):
 
 def get_share(x):
     share = ""
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, ".//span[@class='_355t _4vn2']")))
     try:
         share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
     except:
@@ -188,7 +191,7 @@ def get_share(x):
 # -------------------------------------------------------------
 
 
-def extract_and_write_posts(elements, filename):
+def extract_and_write_posts(elements, fullNameHref):
 
     numberOfCommentTotal = 0
     numberOfReactionTotal = 0
@@ -209,7 +212,7 @@ def extract_and_write_posts(elements, filename):
                 reaction = " "
                 commentno = " "
                 share = " "
-
+                coverName = ""
                 # share
                 share = get_share(x)
 
@@ -229,7 +232,12 @@ def extract_and_write_posts(elements, filename):
                     title = get_title(x)
 
                 status = get_status(x)
-                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
+                if fullNameHref != "":
+                    coverName = fullNameHref
+                else:
+                    coverName = driver.find_element_by_id("fb-timeline-cover-name").text                
+                
+                if title.text == coverName:
                     if status == '':
                         temp = get_div_links(x, "img")
                         if temp == '':  # no image tag which means . it is not a life event
@@ -552,6 +560,8 @@ def scrape_data_post(id, scan_list, section, elements_path, save_status, file_na
     page = []
     folder = os.path.join(os.getcwd(), "Data")
     data = []
+    fullNameHref = ""
+
     if save_status == 4:
         page.append(id)
 
@@ -568,10 +578,11 @@ def scrape_data_post(id, scan_list, section, elements_path, save_status, file_na
             data = driver.find_elements_by_xpath(elements_path[i])
 
             if len(data) == 0 and save_status == 4:
-                data = driver.find_elements_by_xpath(
-                    '//div[@class="_1dwg _1w_m _q7o"]')
+                data = driver.find_elements_by_class_name('_427x')
+                fullNameHref = driver.find_element_by_xpath(
+                    "//*[@id='seo_h1_tag']/a/span")
 
-            save_post(file_names[i], data, save_status, i)
+            save_post(fullNameHref, data, save_status, i)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
@@ -583,14 +594,14 @@ def scrape_data_post(id, scan_list, section, elements_path, save_status, file_na
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-def save_post(name, elements, status, current_section):
+def save_post(fullNameHref, elements, status, current_section):
     """helper function used to save links to files"""
 
     try:
 
         # dealing with Posts
         if status == 4:
-            extract_and_write_posts(elements, name)
+            extract_and_write_posts(elements, fullNameHref)
             return
 
     except:
