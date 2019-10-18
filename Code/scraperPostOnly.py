@@ -233,7 +233,7 @@ def extract_and_write_posts(elements, fullNameHref):
 
                 status = get_status(x)
                 if fullNameHref != "":
-                    coverName = fullNameHref
+                    coverName = fullNameHref.text
                 else:
                     coverName = driver.find_element_by_id("fb-timeline-cover-name").text                
                 
@@ -510,7 +510,8 @@ def scrap_profile(ids):
     # execute for all profiles given in input.txt file
     for id in ids:
         driver.get(id)
-        url = driver.current_url
+        originalUrl = str(driver.current_url)
+        url = originalUrl.rstrip('/')
         id = create_original_link(url)
 
         userName = id.rsplit('/')[-1]
