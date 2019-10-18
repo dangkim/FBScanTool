@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('http://dangkim:8089/connect/token', verify=False, data={
+tokenResponse = requests.post('http://bdo8.com/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -346,7 +346,7 @@ def extract_and_write_posts(elements, filename):
 
         updatePostModelJson = json.dumps(updatePostModel)
 
-        influencerResponse = requests.post('https://localhost:44300/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
+        influencerResponse = requests.post('http://bdo8.com/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     except:
@@ -439,27 +439,9 @@ def save_to_file(name, elements, status, current_section):
     results = []
     videoLinks = []
     try:
-        # dealing with Videos
-        if status == 2:
-            results = elements[0].find_elements_by_css_selector('li')
-            results = [x.find_element_by_css_selector(
-                'a').get_attribute('href') for x in results]
-
-            try:
-                if results[0][0] == '/':
-                    results = [r.pop(0) for r in results]
-                    results = [("https://en-gb.facebook.com/" + x)
-                               for x in results]
-            except:
-                pass
-
-        if status == 2:
-            index = 0
-            for x in results:
-                index += 1
-                if index > 10:
-                    break
-            influencerObject["Influencer"]["VideoLink"]["Paths"] = videoLinks
+        # dealing with Posts
+        if status == 4:
+            extract_and_write_posts(elements, name)
     except:
         print("Exception (save_to_file)", "Status =",
               str(status), sys.exc_info()[0])
@@ -501,7 +483,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://dangkim:8089/api/graphql', json={'query': query}, headers={
+    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -540,18 +522,19 @@ def scrap_profile(ids):
 
         # ----------------------------------------------------------------------------
         print("----------------------------------------")
-        print("Videos:")
-        # setting parameters for scrape_data() to scrap videos
-        scan_list = ["'s Videos", "Videos of"]
-        section = ["/videos_by", "/videos_of"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
-        file_names = ["Uploaded Videos.txt", "Tagged Videos.txt"]
-        save_status = 2
+        print("Posts:")
+        # setting parameters for scrape_data() to scrap posts
+        scan_list = [None]
+        section = []
+        elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
-        print("Videos Done!")
+        file_names = ["Posts.txt"]
+        save_status = 4
+
+        scrape_data_post(id, scan_list, section, elements_path,
+                         save_status, file_names)
+        print("Posts(Statuses) Done!")
+        print("----------------------------------------")
         # ----------------------------------------------------------------------------
 
     print("\nProcess Completed.")
@@ -562,6 +545,62 @@ def scrap_profile(ids):
 
 
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+def scrape_data_post(id, scan_list, section, elements_path, save_status, file_names):
+    """Given some parameters, this function can scrap friends/photos/videos/about/posts(statuses) of a profile"""
+    page = []
+    folder = os.path.join(os.getcwd(), "Data")
+    data = []
+    if save_status == 4:
+        page.append(id)
+
+    for i in range(len(section)):
+        page.append(id + section[i])
+
+    for i in range(len(scan_list)):
+        try:
+            driver.get(page[i])
+
+            if save_status != 3:
+                scroll()
+
+            data = driver.find_elements_by_xpath(elements_path[i])
+
+            if len(data) == 0 and save_status == 4:
+                data = driver.find_elements_by_xpath(
+                    '//div[@class="_1dwg _1w_m _q7o"]')
+
+            save_post(file_names[i], data, save_status, i)
+
+        except:
+            print("Exception (scrape_data)", str(i), "Status =",
+                  str(save_status), sys.exc_info()[0])
+
+    return
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+def save_post(name, elements, status, current_section):
+    """helper function used to save links to files"""
+
+    try:
+
+        # dealing with Posts
+        if status == 4:
+            extract_and_write_posts(elements, name)
+            return
+
+    except:
+        print("Exception (save_to_file)", "Status =",
+              str(status), sys.exc_info()[0])
+
+    return
+
+
+# ----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
 def safe_find_element_by_id(driver, elem_id):

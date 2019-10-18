@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
+tokenResponse = requests.post('http://bdo8.com/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -460,7 +460,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://dangkim:8089/api/graphql', json={'query': query}, headers={
+    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -536,7 +536,7 @@ def scrap_profile(ids):
 
     displayTextModelJson = json.dumps(displayTextModel)
 
-    influencerResponse = requests.post('https://localhost:44300/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+    influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
         'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
