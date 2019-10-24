@@ -359,7 +359,7 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
     page = []
     folder = os.path.join(os.getcwd(), "Data")
     data = []
-
+    workEducation = ""
     for i in range(len(section)):
         page.append(id + section[i])
 
@@ -413,7 +413,8 @@ def scrape_data_post(userName, id, scan_list, section, elements_path, save_statu
                 data = driver.find_elements_by_xpath(
                     '//div[@class="_1dwg _1w_m _q7o"]')
 
-            save_post(userName, file_names[i], data, save_status, i, workEducation)
+            save_post(userName, file_names[i],
+                      data, save_status, i, workEducation)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
@@ -499,6 +500,19 @@ def scrap_profile(ids):
 
         print("\nScraping:", id)
 
+        elements = driver.find_elements_by_xpath(
+            "//*[@id='fb-timeline-cover-name']/a")
+
+        if len(elements) == 0:
+            fullNameHref = driver.find_element_by_xpath(
+                "//*[@id='seo_h1_tag']/a/span")
+            userName += ";" + fullNameHref.text
+
+        else:
+            fullNameHref = driver.find_element_by_xpath(
+                "//*[@id='fb-timeline-cover-name']/a")
+            userName += ";" + fullNameHref.text
+
         print("----------------------------------------")
         print("About:")
         # setting parameters for scrape_data() to scrap the about section
@@ -526,18 +540,22 @@ def scrap_profile(ids):
 
         scrape_data_post(userName, id, scan_list, section, elements_path,
                          save_status, file_names, workEducation)
+
+        tokenObject = json.loads(tokenResponse.content)
+        tokenAuthorization = tokenObject['token_type'] + \
+            " " + tokenObject['access_token']
+
+        displayTextModelJson = json.dumps(displayTextModel)
+
+        influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+
+        displayTextModel['contentItemId'] = ""
+        displayTextModel['displayText'] = ""
+
         print("Posts(Statuses) Done!")
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
-
-    tokenObject = json.loads(tokenResponse.content)
-    tokenAuthorization = tokenObject['token_type'] + \
-        " " + tokenObject['access_token']
-
-    displayTextModelJson = json.dumps(displayTextModel)
-
-    influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
-        'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
@@ -621,7 +639,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
+    with open('C:\\ScraperBuildDisplayText\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -631,7 +649,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
+        "C:\\ScraperBuildDisplayText\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")

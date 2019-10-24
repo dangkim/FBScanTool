@@ -443,6 +443,8 @@ def scrap_profile(ids):
     for id in ids:
 
         driver.get(id)
+        if 'Not Found' in driver.title:        
+            continue
         originalUrl = str(driver.current_url)
         url = originalUrl.rstrip('/')
         id = create_original_link(url)
@@ -471,44 +473,21 @@ def scrap_profile(ids):
             influencerObject["DisplayText"] += fullNameHref.text + ";"
             influencerObject["TitlePart"]["Title"] += userName + ";"
 
-        print("----------------------------------------")
-        print("About:")
-        # setting parameters for scrape_data() to scrap the about section
-        scan_list = [None] * 1
-        section = ["/about?section=education"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
-        file_names = ["Work and Education.txt"]
-        save_status = 3
+        tokenObject = json.loads(tokenResponse.content)
+        tokenAuthorization = tokenObject['token_type'] + \
+            " " + tokenObject['access_token']
+        # insert influencer
+        # influencerJson = json.dumps(influencerObject)
+        influencerResponse = requests.post('http://bdo8.com/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
+            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
-        print("About Section Done!")
+        influencerObject["Influencer"]["FullName"]["Text"] = ""
+        influencerObject["DisplayText"] = ""
+        influencerObject["TitlePart"]["Title"] = ""
 
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Posts:")
-        # setting parameters for scrape_data() to scrap posts
-        scan_list = [None]
-        section = []
-        elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
-
-        file_names = ["Posts.txt"]
-        save_status = 4
-
-        scrape_data_post(id, scan_list, section, elements_path,
-                         save_status, file_names)
         print("Posts(Statuses) Done!")
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
-
-    tokenObject = json.loads(tokenResponse.content)
-    tokenAuthorization = tokenObject['token_type'] + \
-        " " + tokenObject['access_token']
-    # insert influencer
-    # influencerJson = json.dumps(influencerObject)
-    influencerResponse = requests.post('http://bdo8.com/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
-                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
     print("\nProcess Completed.")
 
@@ -592,7 +571,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
+    with open('C:\\ScraperBuildKOL\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -602,7 +581,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
+        "C:\\ScraperBuildKOL\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")

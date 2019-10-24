@@ -689,7 +689,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
+    with open('C:\\ScraperPostOnly\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -699,7 +699,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
+        "C:\\ScraperPostOnly\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")

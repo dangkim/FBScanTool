@@ -198,22 +198,13 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
         try:
             driver.get(page[i])
 
-            if (save_status == 0) or (save_status == 1) or (
-                    save_status == 2):  # Only run this for friends, photos and videos
-
-                # the bar which contains all the sections
-                sections_bar = driver.find_element_by_xpath(
-                    "//*[@class='_3cz'][1]/div[2]/div[1]")
-
-                if sections_bar.text.find(scan_list[i]) == -1:
-                    continue
-
-            if save_status != 3:
-                scroll()
-
             data = driver.find_elements_by_xpath(elements_path[i])
 
-            save_to_file(file_names[i], data, save_status, i)
+            if len(data) > 5:
+                save_to_file(file_names[i], data[0:5],
+                             save_status, scan_list[i])
+            else:
+                save_to_file(file_names[i], data, save_status, scan_list[i])
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
@@ -268,9 +259,20 @@ def save_to_file(name, elements, status, current_section):
     try:
         # dealing with Videos
         if status == 2:
-            results = elements[0].find_elements_by_css_selector('li')
-            results = [x.find_element_by_css_selector(
-                'a').get_attribute('href') for x in results]
+
+            if current_section == "All Videos":
+                results = elements
+                listOfTagA = results[0].get_attribute('href')
+                if listOfTagA != '':
+                    results = [x.get_attribute('href') for x in results]
+                else:
+                    results = [x.find_element_by_css_selector(
+                        'a').get_attribute('href') for x in results]
+
+            else:
+                results = elements[0].find_elements_by_css_selector('li')
+                results = [x.find_element_by_css_selector(
+                    'a').get_attribute('href') for x in results]
 
             try:
                 if results[0][0] == '/':
@@ -350,7 +352,8 @@ def scrap_profile(ids):
     # execute for all profiles given in input.txt file
     for id in ids:
         driver.get(id)
-        url = driver.current_url
+        originalUrl = str(driver.current_url)
+        url = originalUrl.rstrip('/')
         id = create_original_link(url)
 
         userName = id.rsplit('/')[-1]
@@ -372,11 +375,35 @@ def scrap_profile(ids):
         print("----------------------------------------")
         print("Videos:")
         # setting parameters for scrape_data() to scrap videos
-        scan_list = ["'s Videos", "Videos of"]
-        section = ["/videos_by", "/videos_of"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
-        file_names = ["Uploaded Videos.txt", "Tagged Videos.txt"]
+        # scan_list = ["'s Videos", "Videos of"]
+        # section = ["/videos_by", "/videos_of"]
+        # elements_path = [
+        #     "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
+
+        try:
+            followerSpan = driver.find_element_by_xpath(
+                "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+            scan_list = ["'s Videos"]
+            section = ["/videos_by"]
+            elements_path = [
+                "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"]
+            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+        except NoSuchElementException:
+            try:
+                followerSpan = driver.find_element_by_xpath(
+                    "//*[@id='entity_sidebar']/div[2]/div[2]/div")
+                scan_list = ["All Videos"]
+                section = ["/videos"]
+                elements_path = [
+                    "//*[contains(@class, '_3vwb _400z _2-40')]"]
+                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+            except NoSuchElementException:
+                scan_list = ["All Videos"]
+                section = ["/videos"]
+                elements_path = [
+                    "//*[contains(@class, '_3v4h _48gm _50f3 _50f7')]"]
+                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+
         save_status = 2
 
         scrape_data(id, scan_list, section, elements_path,
@@ -387,9 +414,9 @@ def scrap_profile(ids):
     tokenObject = json.loads(tokenResponse.content)
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
-    
+
     videoModelJson = json.dumps(videoModel)
-    
+
     influencerResponse = requests.post('http://bdo8.com/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
                                        'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
@@ -477,7 +504,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
+    with open('C:\\ScraperVideoOnly\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -487,7 +514,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
+        "C:\\ScraperVideoOnly\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")

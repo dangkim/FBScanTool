@@ -329,15 +329,49 @@ def scrap_profile(ids):
             elements_path = ["//*[contains(@id, 'pic_')]"] * 2
             file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
         except NoSuchElementException:
-            followerSpan = driver.find_element_by_xpath(
-                "//*[@id='PagesProfileHomeSecondaryColumnPagelet']/div/div[3]/div/div[1]/div[4]/div/div[2]/div")
-            followerSpanText = followerSpan.text.replace(
-                "people follow this", "")
-            followerSpanText = followerSpanText.replace(",", "")
-            scan_list = ["All Photos"]
-            section = ["/photos"]
-            elements_path = ["//*[contains(@class, '_2eea')]/a"]
-            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+            try:
+                followerSpan = driver.find_element_by_css_selector(
+                    "._4-u2._6590._3xaf._4-u8")
+
+                followerSpanTextList = followerSpan.text.split('\n')
+                for target_list in followerSpanTextList:
+                    if "people follow this" in target_list:
+                        followerSpanText = target_list.split(' ')[0]
+                        if 'K' in followerSpanText:
+                            followerSpanText = str(
+                                int(followerSpanText.split('K')[0]) * 1000)
+                        else:
+                            followerSpanText = followerSpanText.replace(",", "")
+                    pass
+                # followerSpan = driver.find_element_by_xpath(
+                #     "//*[@id='PagesProfileHomeSecondaryColumnPagelet']/div/div[3]/div/div[1]/div[4]/div/div[2]/div")
+                # followerSpanText = followerSpan.text.replace(
+                #     "people follow this", "")
+                # followerSpanText = followerSpanText.replace(",", "")
+                scan_list = ["All Photos"]
+                section = ["/photos"]
+                elements_path = ["//*[contains(@class, '_2eea')]/a"]
+                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+            except NoSuchElementException:
+                followerSpanText = ""
+                followerSpan = driver.find_element_by_xpath(
+                    "//*[@id='entity_sidebar']/div[2]/div[2]/div")
+                followerSpanTextList = followerSpan.text.split('\n')
+                for target_list in followerSpanTextList:
+                    if "followers" in target_list:
+                        followerSpanText = target_list.split(' ')[0]
+                        if 'K' in followerSpanText:
+                            followerSpanText = str(
+                                int(followerSpanText.split('K')[0]) * 1000)
+                        else:
+                            followerSpanText = followerSpanText.replace(",", "")
+                    pass
+
+                scan_list = ["All Photos"]
+                section = ["/photos"]
+                elements_path = ["//*[contains(@class, '_2eea')]/a"]
+                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+
             # print("Element not found")
 
         # //*[@id="PagesProfileHomeSecondaryColumnPagelet"]/div/div[3]/div/div[1]/div[4]/div/div[2]/div
@@ -442,7 +476,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\credentials.txt') as f:
+    with open('C:\\ScraperFollowersAndPhotosOnly\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -452,7 +486,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "E:\\Kolviets\\FBScanTool\\FBScanTool\\Code\\input.txt", newline='\n')]
+        "C:\\ScraperFollowersAndPhotosOnly\\input.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")
