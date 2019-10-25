@@ -58,6 +58,7 @@ autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe c
 
 influencerObject = json.loads(json_string)
 numberOfPost = []
+wrongFaceBook = []
 displayText = ""
 # -------------------------------------------------------------
 # -------------------------------------------------------------
@@ -438,13 +439,23 @@ def scrap_profile(ids):
     folder = os.path.join(os.getcwd(), "Data")
     create_folder(folder)
     os.chdir(folder)
-
     # execute for all profiles given in input.txt file
     for id in ids:
-
+        time.sleep(4)
         driver.get(id)
-        if 'Not Found' in driver.title:        
+        if 'Not Found' in driver.title:
+            wrongFaceBook.append(id)
             continue
+
+        try:
+            expiredElement = driver.find_element_by_css_selector(
+                ".phl.ptm.uiInterstitialContent")
+            if 'The link you followed may have expired' in expiredElement.text:
+                wrongFaceBook.append(id)
+                continue
+        except NoSuchElementException:
+            pass
+
         originalUrl = str(driver.current_url)
         url = originalUrl.rstrip('/')
         id = create_original_link(url)
@@ -489,6 +500,13 @@ def scrap_profile(ids):
         print("----------------------------------------")
     # ----------------------------------------------------------------------------
 
+    print("Wrong Facebook:")
+
+    for wrong in wrongFaceBook:
+        print(wrong)
+        pass
+
+    print("----------------------------------------")
     print("\nProcess Completed.")
 
     return
