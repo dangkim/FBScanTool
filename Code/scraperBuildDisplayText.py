@@ -496,65 +496,67 @@ def scrap_profile(ids):
 
         result = run_query(query)  # execute query
 
-        displayTextModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
+        if len(result['data']['influencer']) > 0:
 
-        print("\nScraping:", id)
+            displayTextModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
 
-        elements = driver.find_elements_by_xpath(
-            "//*[@id='fb-timeline-cover-name']/a")
+            print("\nScraping:", id)
 
-        if len(elements) == 0:
-            fullNameHref = driver.find_element_by_xpath(
-                "//*[@id='seo_h1_tag']/a/span")
-            userName += ";" + fullNameHref.text
-
-        else:
-            fullNameHref = driver.find_element_by_xpath(
+            elements = driver.find_elements_by_xpath(
                 "//*[@id='fb-timeline-cover-name']/a")
-            userName += ";" + fullNameHref.text
 
-        print("----------------------------------------")
-        print("About:")
-        # setting parameters for scrape_data() to scrap the about section
-        scan_list = [None] * 1
-        section = ["/about?section=education"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
-        file_names = ["Work and Education.txt"]
-        save_status = 3
+            if len(elements) == 0:
+                fullNameHref = driver.find_element_by_xpath(
+                    "//*[@id='seo_h1_tag']/a/span")
+                userName += ";" + fullNameHref.text
 
-        workEducation = scrape_data(id, scan_list, section, elements_path,
-                                    save_status, file_names)
-        print("About Section Done!")
+            else:
+                fullNameHref = driver.find_element_by_xpath(
+                    "//*[@id='fb-timeline-cover-name']/a")
+                userName += ";" + fullNameHref.text
 
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Posts:")
-        # setting parameters for scrape_data() to scrap posts
-        scan_list = [None]
-        section = []
-        elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
+            print("----------------------------------------")
+            print("About:")
+            # setting parameters for scrape_data() to scrap the about section
+            scan_list = [None] * 1
+            section = ["/about?section=education"]
+            elements_path = [
+                "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
+            file_names = ["Work and Education.txt"]
+            save_status = 3
 
-        file_names = ["Posts.txt"]
-        save_status = 4
+            workEducation = scrape_data(id, scan_list, section, elements_path,
+                                        save_status, file_names)
+            print("About Section Done!")
 
-        scrape_data_post(userName, id, scan_list, section, elements_path,
-                         save_status, file_names, workEducation)
+            # ----------------------------------------------------------------------------
+            print("----------------------------------------")
+            print("Posts:")
+            # setting parameters for scrape_data() to scrap posts
+            scan_list = [None]
+            section = []
+            elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
 
-        tokenObject = json.loads(tokenResponse.content)
-        tokenAuthorization = tokenObject['token_type'] + \
-            " " + tokenObject['access_token']
+            file_names = ["Posts.txt"]
+            save_status = 4
 
-        displayTextModelJson = json.dumps(displayTextModel)
+            scrape_data_post(userName, id, scan_list, section, elements_path,
+                            save_status, file_names, workEducation)
 
-        influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
-            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+            tokenObject = json.loads(tokenResponse.content)
+            tokenAuthorization = tokenObject['token_type'] + \
+                " " + tokenObject['access_token']
 
-        displayTextModel['contentItemId'] = ""
-        displayTextModel['displayText'] = ""
+            displayTextModelJson = json.dumps(displayTextModel)
 
-        print("Posts(Statuses) Done!")
-        print("----------------------------------------")
+            influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+                'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+
+            displayTextModel['contentItemId'] = ""
+            displayTextModel['displayText'] = ""
+
+            print("Posts(Statuses) Done!")
+            print("----------------------------------------")
     # ----------------------------------------------------------------------------
 
     print("\nProcess Completed.")
