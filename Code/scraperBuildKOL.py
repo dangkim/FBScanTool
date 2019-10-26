@@ -434,6 +434,27 @@ def create_folder(folder):
     if not os.path.exists(folder):
         os.mkdir(folder)
 
+# A simple function to use requests.post to make the API call. Note the json= section.
+
+
+def run_query(query):
+
+    # get influencer by userName
+    tokenObject = json.loads(tokenResponse.content)
+    tokenAuthorization = tokenObject['token_type'] + \
+        " " + tokenObject['access_token']
+
+    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
+        'Authorization': tokenAuthorization})
+
+    if request.status_code == 200:
+        return request.json()
+    else:
+        raise Exception("Query failed to run by returning code of {}. {}".format(
+            request.status_code, query))
+
+# --------------------------------------------------------------------------------
+
 
 def scrap_profile(ids):
     folder = os.path.join(os.getcwd(), "Data")
@@ -441,60 +462,76 @@ def scrap_profile(ids):
     os.chdir(folder)
     # execute for all profiles given in input.txt file
     for id in ids:
-        time.sleep(4)
+        # time.sleep(4)
         driver.get(id)
-        if 'Not Found' in driver.title:
-            wrongFaceBook.append(id)
-            continue
-
-        try:
-            expiredElement = driver.find_element_by_css_selector(
-                ".phl.ptm.uiInterstitialContent")
-            if 'The link you followed may have expired' in expiredElement.text:
-                wrongFaceBook.append(id)
-                continue
-        except NoSuchElementException:
-            pass
-
         originalUrl = str(driver.current_url)
         url = originalUrl.rstrip('/')
         id = create_original_link(url)
-
         userName = id.rsplit('/')[-1]
 
-        influencerObject["DisplayText"] += userName + ";"
-        influencerObject["TitlePart"]["Title"] += userName + ";"
+        # The GraphQL query (with a few aditional bits included) itself defined as a multi-line string.
+        query = '''{{
+	        influencer(where: {{displayText_contains: "{0}"}}, status: PUBLISHED) {{
+                contentItemId
+            }} 
+        }}'''.format(userName)
 
-        print("\nScraping:", id)
+        result = run_query(query)  # execute query
 
-        elements = driver.find_elements_by_xpath(
-            "//*[@id='fb-timeline-cover-name']/a")
+        if len(result['data']['influencer']) == 0:
 
-        if len(elements) == 0:
-            fullNameHref = driver.find_element_by_xpath(
-                "//*[@id='seo_h1_tag']/a/span")
-            influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
-            influencerObject["DisplayText"] += fullNameHref.text + ";"
+            if 'Not Found' in driver.title:
+                wrongFaceBook.append(id)
+                continue
+
+            try:
+                expiredElement = driver.find_element_by_css_selector(
+                    ".phl.ptm.uiInterstitialContent")
+                if 'The link you followed may have expired' in expiredElement.text:
+                    wrongFaceBook.append(id)
+                    continue
+            except NoSuchElementException:
+                pass
+
+            originalUrl = str(driver.current_url)
+            url = originalUrl.rstrip('/')
+            id = create_original_link(url)
+
+            userName = id.rsplit('/')[-1]
+
+            influencerObject["DisplayText"] += userName + ";"
             influencerObject["TitlePart"]["Title"] += userName + ";"
 
-        else:
-            fullNameHref = driver.find_element_by_xpath(
+            print("\nScraping:", id)
+
+            elements = driver.find_elements_by_xpath(
                 "//*[@id='fb-timeline-cover-name']/a")
-            influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
-            influencerObject["DisplayText"] += fullNameHref.text + ";"
-            influencerObject["TitlePart"]["Title"] += userName + ";"
 
-        tokenObject = json.loads(tokenResponse.content)
-        tokenAuthorization = tokenObject['token_type'] + \
-            " " + tokenObject['access_token']
-        # insert influencer
-        # influencerJson = json.dumps(influencerObject)
-        influencerResponse = requests.post('http://bdo8.com/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
-            'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+            if len(elements) == 0:
+                fullNameHref = driver.find_element_by_xpath(
+                    "//*[@id='seo_h1_tag']/a/span")
+                influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
+                influencerObject["DisplayText"] += fullNameHref.text + ";"
+                influencerObject["TitlePart"]["Title"] += userName + ";"
 
-        influencerObject["Influencer"]["FullName"]["Text"] = ""
-        influencerObject["DisplayText"] = ""
-        influencerObject["TitlePart"]["Title"] = ""
+            else:
+                fullNameHref = driver.find_element_by_xpath(
+                    "//*[@id='fb-timeline-cover-name']/a")
+                influencerObject["Influencer"]["FullName"]["Text"] = fullNameHref.text
+                influencerObject["DisplayText"] += fullNameHref.text + ";"
+                influencerObject["TitlePart"]["Title"] += userName + ";"
+
+            tokenObject = json.loads(tokenResponse.content)
+            tokenAuthorization = tokenObject['token_type'] + \
+                " " + tokenObject['access_token']
+            # insert influencer
+            # influencerJson = json.dumps(influencerObject)
+            influencerResponse = requests.post('http://bdo8.com/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
+                'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+
+            influencerObject["Influencer"]["FullName"]["Text"] = ""
+            influencerObject["DisplayText"] = ""
+            influencerObject["TitlePart"]["Title"] = ""
 
         print("Posts(Statuses) Done!")
         print("----------------------------------------")

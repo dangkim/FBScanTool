@@ -286,11 +286,16 @@ def run_query(query):
     else:
         raise Exception("Query failed to run by returning code of {}. {}".format(
             request.status_code, query))
+        return {}
 
 
 def scrap_profile(ids):
     urls = []
     userNames = []
+    scan_list = []
+    section = []
+    elements_path = []
+    file_names = []
     # execute for all profiles given in input.txt file
     for id in ids:
         driver.get(id)
@@ -304,81 +309,71 @@ def scrap_profile(ids):
         query = '''{{
 	        influencer(where: {{displayText_contains: "{0}"}}, status: PUBLISHED) {{
                 contentItemId
-            }} 
+            }}
         }}'''.format(userName)
 
         result = run_query(query)  # execute query
 
-        followerAndPhotoModel['ContentItemId'] = result['data']['influencer'][0]['contentItemId']
-        # make_followerAndPhotoModel(result)
+        if len(result['data']['influencer']) > 0:
 
-        # insert influencer
-        # influencerJson = json.dumps(influencerObject)
-        # influencerResponse = requests.post('https://localhost:44300/api/graphql', verify=False, data=json.dumps(influencerObject), headers={
-        #                                'Content-Type': 'application/graphql', 'Authorization': tokenAuthorization})
+            followerAndPhotoModel['ContentItemId'] = result['data']['influencer'][0]['contentItemId']
 
-        print("\nScraping:", id)
+            print("\nScraping:", id)
 
-        try:
-            followerSpan = driver.find_element_by_xpath(
-                "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-            followerSpanText = followerSpan.text.replace("Followers", "")
-            followerSpanText = followerSpanText.replace(",", "")
-            scan_list = ["Photos of"]
-            section = ["/photos", "/photos_all", "/photos_of"]
-            elements_path = ["//*[contains(@id, 'pic_')]"] * 2
-            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
-        except NoSuchElementException:
             try:
-                followerSpan = driver.find_element_by_css_selector(
-                    "._4-u2._6590._3xaf._4-u8")
-
-                followerSpanTextList = followerSpan.text.split('\n')
-                for target_list in followerSpanTextList:
-                    if "people follow this" in target_list:
-                        followerSpanText = target_list.split(' ')[0]
-                        if 'K' in followerSpanText:
-                            followerSpanText = str(
-                                int(followerSpanText.split('K')[0]) * 1000)
-                        else:
-                            followerSpanText = followerSpanText.replace(",", "")
-                    pass
-                # followerSpan = driver.find_element_by_xpath(
-                #     "//*[@id='PagesProfileHomeSecondaryColumnPagelet']/div/div[3]/div/div[1]/div[4]/div/div[2]/div")
-                # followerSpanText = followerSpan.text.replace(
-                #     "people follow this", "")
-                # followerSpanText = followerSpanText.replace(",", "")
-                scan_list = ["All Photos"]
-                section = ["/photos"]
-                elements_path = ["//*[contains(@class, '_2eea')]/a"]
+                followerSpan = driver.find_element_by_xpath(
+                    "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+                followerSpanText = followerSpan.text.replace("Followers", "")
+                followerSpanText = followerSpanText.replace(",", "")
+                scan_list = ["Photos of"]
+                section = ["/photos", "/photos_all", "/photos_of"]
+                elements_path = ["//*[contains(@id, 'pic_')]"] * 2
                 file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
             except NoSuchElementException:
-                followerSpanText = ""
-                followerSpan = driver.find_element_by_xpath(
-                    "//*[@id='entity_sidebar']/div[2]/div[2]/div")
-                followerSpanTextList = followerSpan.text.split('\n')
-                for target_list in followerSpanTextList:
-                    if "followers" in target_list:
-                        followerSpanText = target_list.split(' ')[0]
-                        if 'K' in followerSpanText:
-                            followerSpanText = str(
-                                int(followerSpanText.split('K')[0]) * 1000)
-                        else:
-                            followerSpanText = followerSpanText.replace(",", "")
-                    pass
+                try:
+                    followerSpan = driver.find_element_by_css_selector(
+                        "._4-u2._6590._3xaf._4-u8")
 
-                scan_list = ["All Photos"]
-                section = ["/photos"]
-                elements_path = ["//*[contains(@class, '_2eea')]/a"]
-                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+                    followerSpanTextList = followerSpan.text.split('\n')
+                    for target_list in followerSpanTextList:
+                        if "people follow this" in target_list:
+                            followerSpanText = target_list.split(' ')[0]
+                            if 'K' in followerSpanText:
+                                followerSpanText = str(
+                                    int(followerSpanText.split('K')[0]) * 1000)
+                            else:
+                                followerSpanText = followerSpanText.replace(
+                                    ",", "")
+                        pass
 
-            # print("Element not found")
+                    scan_list = ["All Photos"]
+                    section = ["/photos"]
+                    elements_path = ["//*[contains(@class, '_2eea')]/a"]
+                    file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+                except NoSuchElementException:
+                    followerSpanText = ""
+                    followerSpan = driver.find_element_by_xpath(
+                        "//*[@id='entity_sidebar']/div[2]/div[2]/div")
+                    followerSpanTextList = followerSpan.text.split('\n')
+                    for target_list in followerSpanTextList:
+                        if "followers" in target_list:
+                            followerSpanText = target_list.split(' ')[0]
+                            if 'K' in followerSpanText:
+                                followerSpanText = str(
+                                    int(followerSpanText.split('K')[0]) * 1000)
+                            else:
+                                followerSpanText = followerSpanText.replace(
+                                    ",", "")
+                        pass
 
-        # //*[@id="PagesProfileHomeSecondaryColumnPagelet"]/div/div[3]/div/div[1]/div[4]/div/div[2]/div
+                    scan_list = ["All Photos"]
+                    section = ["/photos"]
+                    elements_path = ["//*[contains(@class, '_2eea')]/a"]
+                    file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
 
-        followerAndPhotoModel['NumberOfFollowers'] = int(
-            followerSpanText.strip())
-        print(followerSpan.text)
+            followerAndPhotoModel['NumberOfFollowers'] = int(
+                followerSpanText.strip())
+            print(followerSpan.text)
         # ----------------------------------------------------------------------------
 
         print("----------------------------------------")
