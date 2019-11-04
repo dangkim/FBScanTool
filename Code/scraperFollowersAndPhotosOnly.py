@@ -323,8 +323,10 @@ def scrap_profile(ids):
             try:
                 followerSpan = driver.find_element_by_xpath(
                     "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-                followerSpanText = followerSpan.text.replace("Followers", "")
+                followerSpanTextList = followerSpan.text.split(' ')
+                followerSpanText = followerSpanTextList[0]
                 followerSpanText = followerSpanText.replace(",", "")
+                followerSpanText = followerSpanText.replace(".", "")
                 scan_list = ["Photos of"]
                 section = ["/photos", "/photos_all", "/photos_of"]
                 elements_path = ["//*[contains(@id, 'pic_')]"] * 2
@@ -335,8 +337,9 @@ def scrap_profile(ids):
                         "._4-u2._6590._3xaf._4-u8")
 
                     followerSpanTextList = followerSpan.text.split('\n')
+
                     for target_list in followerSpanTextList:
-                        if "people follow this" in target_list:
+                        if "people follow this" in target_list or "người theo dõi trang này" in target_list:
                             followerSpanText = target_list.split(' ')[0]
                             if 'K' in followerSpanText:
                                 followerSpanText = str(
@@ -344,6 +347,8 @@ def scrap_profile(ids):
                             else:
                                 followerSpanText = followerSpanText.replace(
                                     ",", "")
+                                followerSpanText = followerSpanText.replace(
+                                    ".", "")
                         pass
 
                     scan_list = ["All Photos"]
@@ -364,6 +369,8 @@ def scrap_profile(ids):
                             else:
                                 followerSpanText = followerSpanText.replace(
                                     ",", "")
+                                followerSpanText = followerSpanText.replace(
+                                    ".", "")
                         pass
 
                     scan_list = ["All Photos"]

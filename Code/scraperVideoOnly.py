@@ -367,62 +367,64 @@ def scrap_profile(ids):
 
         result = run_query(query)  # execute query
 
-        videoModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
+        if len(result['data']['influencer']) > 0:
 
-        print("\nScraping:", id)
+            videoModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
 
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Videos:")
-        # setting parameters for scrape_data() to scrap videos
-        # scan_list = ["'s Videos", "Videos of"]
-        # section = ["/videos_by", "/videos_of"]
-        # elements_path = [
-        #     "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
+            print("\nScraping:", id)
 
-        try:
-            followerSpan = driver.find_element_by_xpath(
-                "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-            scan_list = ["'s Videos"]
-            section = ["/videos_by"]
-            elements_path = [
-                "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"]
-            file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
-        except NoSuchElementException:
+            # ----------------------------------------------------------------------------
+            print("----------------------------------------")
+            print("Videos:")
+            # setting parameters for scrape_data() to scrap videos
+            # scan_list = ["'s Videos", "Videos of"]
+            # section = ["/videos_by", "/videos_of"]
+            # elements_path = [
+            #     "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
+
             try:
                 followerSpan = driver.find_element_by_xpath(
-                    "//*[@id='entity_sidebar']/div[2]/div[2]/div")
-                scan_list = ["All Videos"]
-                section = ["/videos"]
+                    "//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
+                scan_list = ["'s Videos"]
+                section = ["/videos_by"]
                 elements_path = [
-                    "//*[contains(@class, '_3vwb _400z _2-40')]"]
+                    "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"]
                 file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
             except NoSuchElementException:
-                scan_list = ["All Videos"]
-                section = ["/videos"]
-                elements_path = [
-                    "//*[contains(@class, '_3v4h _48gm _50f3 _50f7')]"]
-                file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+                try:
+                    followerSpan = driver.find_element_by_xpath(
+                        "//*[@id='entity_sidebar']/div[2]/div[2]/div")
+                    scan_list = ["All Videos"]
+                    section = ["/videos"]
+                    elements_path = [
+                        "//*[contains(@class, '_3vwb _400z _2-40')]"]
+                    file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
+                except NoSuchElementException:
+                    scan_list = ["All Videos"]
+                    section = ["/videos"]
+                    elements_path = [
+                        "//*[contains(@class, '_3v4h _48gm _50f3 _50f7')]"]
+                    file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
 
-        save_status = 2
+            save_status = 2
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
-        print("Videos Done!")
-        # ----------------------------------------------------------------------------
+            scrape_data(id, scan_list, section, elements_path,
+                        save_status, file_names)
+            print("Videos Done!")
+            # ----------------------------------------------------------------------------
 
-    tokenObject = json.loads(tokenResponse.content)
-    tokenAuthorization = tokenObject['token_type'] + \
-        " " + tokenObject['access_token']
+            tokenObject = json.loads(tokenResponse.content)
+            tokenAuthorization = tokenObject['token_type'] + \
+                " " + tokenObject['access_token']
 
-    videoModelJson = json.dumps(videoModel)
+            videoModelJson = json.dumps(videoModel)
 
-    influencerResponse = requests.post('http://bdo8.com/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
-                                       'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+            influencerResponse = requests.post('http://bdo8.com/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
+                'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
-    print("\nProcess Completed.")
+            print("\nProcess Completed.")
 
-    # ----------------------------------------------------------------------------
+            # ----------------------------------------------------------------------------
 
     return
 

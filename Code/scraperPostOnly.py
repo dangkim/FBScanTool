@@ -235,8 +235,9 @@ def extract_and_write_posts(elements, fullNameHref):
                 if fullNameHref != "":
                     coverName = fullNameHref.text
                 else:
-                    coverName = driver.find_element_by_id("fb-timeline-cover-name").text                
-                
+                    coverName = driver.find_element_by_id(
+                        "fb-timeline-cover-name").text
+
                 if title.text == coverName:
                     if status == '':
                         temp = get_div_links(x, "img")
@@ -282,18 +283,24 @@ def extract_and_write_posts(elements, fullNameHref):
                     reaction = reaction.text
 
                 if not isinstance(commentno, str):
-                    if commentno.text.find("Comments") != -1:
+                    if commentno.text.find("Comments") != -1 or commentno.text.find("comments") != -1:
                         commentno = commentno.text.replace(
                             "Comments", " ").strip()
-                    elif commentno.text.find("Comment") != -1:
+                        commentno = commentno.replace(
+                            "comments", " ").strip()
+                    elif commentno.text.find("Comment") != -1 or commentno.text.find("comment") != -1:
                         commentno = commentno.text.replace(
                             "Comment", " ").strip()
+                        commentno = commentno.replace(
+                            "comment", " ").strip()
 
                 if not isinstance(share, str):
-                    if share.text.find("Shares") != -1:
+                    if share.text.find("Shares") != -1 or share.text.find("shares") != -1:
                         share = share.text.replace("Shares", " ").strip()
-                    elif share.text.find("Share") != -1:
+                        share = share.replace("shares", " ").strip()
+                    elif share.text.find("Share") != -1 or share.text.find("share") != -1:
                         share = share.text.replace("Share", " ").strip()
+                        share = share.replace("share", " ").strip()
 
                 status = status.replace("\n", " ")
                 title = title.replace("\n", " ")
@@ -525,26 +532,27 @@ def scrap_profile(ids):
 
         result = run_query(query)  # execute query
 
-        updatePostModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
+        if len(result['data']['influencer']) > 0:
+            updatePostModel['contentItemId'] = result['data']['influencer'][0]['contentItemId']
 
-        print("\nScraping:", id)
+            print("\nScraping:", id)
 
-        # ----------------------------------------------------------------------------
-        print("----------------------------------------")
-        print("Posts:")
-        # setting parameters for scrape_data() to scrap posts
-        scan_list = [None]
-        section = []
-        elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
+            # ----------------------------------------------------------------------------
+            print("----------------------------------------")
+            print("Posts:")
+            # setting parameters for scrape_data() to scrap posts
+            scan_list = [None]
+            section = []
+            elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
 
-        file_names = ["Posts.txt"]
-        save_status = 4
+            file_names = ["Posts.txt"]
+            save_status = 4
 
-        scrape_data_post(id, scan_list, section, elements_path,
-                         save_status, file_names)
-        print("Posts(Statuses) Done!")
-        print("----------------------------------------")
-        # ----------------------------------------------------------------------------
+            scrape_data_post(id, scan_list, section, elements_path,
+                             save_status, file_names)
+            print("Posts(Statuses) Done!")
+            print("----------------------------------------")
+            # ----------------------------------------------------------------------------
 
     print("\nProcess Completed.")
 
