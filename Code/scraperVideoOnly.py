@@ -200,6 +200,9 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
 
             data = driver.find_elements_by_xpath(elements_path[i])
 
+            if len(data) == 0:
+                data = driver.find_elements_by_css_selector(".async_saving._400z._2-40.__-q._5asm._62ej")
+
             if len(data) > 5:
                 save_to_file(file_names[i], data[0:5],
                              save_status, scan_list[i])
@@ -333,7 +336,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
+    request = requests.post('http://bdo8.com/api/graphql', verify=False, json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -424,6 +427,8 @@ def scrap_profile(ids):
 
             print("\nProcess Completed.")
 
+            videoModel['contentItemId'] = ""
+            videoModel['videoPaths'] = []
             # ----------------------------------------------------------------------------
 
     return

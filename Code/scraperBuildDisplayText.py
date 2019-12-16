@@ -63,7 +63,8 @@ workEducation = ""
 
 displayTextModel = {
     "contentItemId": "",
-    "displayText": ""
+    "displayText": "",
+    "description": ""
 }
 # -------------------------------------------------------------
 # -------------------------------------------------------------
@@ -461,7 +462,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
+    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, verify=False, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -527,6 +528,8 @@ def scrap_profile(ids):
 
             workEducation = scrape_data(id, scan_list, section, elements_path,
                                         save_status, file_names)
+
+            displayTextModel['description'] = workEducation
             print("About Section Done!")
 
             # ----------------------------------------------------------------------------
@@ -554,6 +557,7 @@ def scrap_profile(ids):
 
             displayTextModel['contentItemId'] = ""
             displayTextModel['displayText'] = ""
+            displayTextModel['description'] = ""
 
             print("Posts(Statuses) Done!")
             print("----------------------------------------")

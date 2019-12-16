@@ -173,6 +173,10 @@ def image_downloader(img_links, folder_name):
         influencerResponse = requests.post('http://bdo8.com/api/content/UpdateFollowerAndPhoto', verify=False, data=followerAndPhotoModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
+        followerAndPhotoModel["ContentItemId"] = ''
+        followerAndPhotoModel["PhotoPaths"] = []
+        followerAndPhotoModel["NumberOfFollowers"] = 0
+
     except:
         print("Exception (image_downloader):", sys.exc_info()[0])
 

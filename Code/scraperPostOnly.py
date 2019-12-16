@@ -364,6 +364,8 @@ def extract_and_write_posts(elements, fullNameHref):
         influencerResponse = requests.post('http://bdo8.com/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
+        postModel.clear()
+        
     except:
         print("Exception (extract_and_write_posts)",
               "Status =", sys.exc_info()[0])
