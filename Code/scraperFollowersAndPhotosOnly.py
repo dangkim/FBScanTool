@@ -35,9 +35,9 @@ download_friends_photos = False
 friends_small_size = True
 photos_small_size = False
 
-total_scrolls = 20
-current_scrolls = 0
-scroll_time = 10
+total_scrolls = 15
+current_scrolls = 10
+scroll_time = 5
 
 old_height = 0
 
