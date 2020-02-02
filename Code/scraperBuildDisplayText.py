@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('http://bdo8.com/connect/token', verify=False, data={
+tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -43,18 +43,18 @@ old_height = 0
 
 json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Influencer","DisplayText":"","Latest":true,"Published":true,"ModifiedUtc":"","PublishedUtc":"","CreatedUtc":"","Owner":"admin","Author":"admin","Influencer":{"Description":{"Text":""},"Photo":{"Paths":[],"Urls":[]},"Fanpage":{"Text":""},"Email":{"Text":""},"password":{"Text":""},"FullName":{"Text":""},"ShareLink":{"Text":""},"PostImage":{"Text":""},"LiveStream":{"Text":""},"CheckIn":{"Text":""},"Video":{"Text":""},"Phone":{"Text":""},"NumberOfLike":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfLove":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"VideoLink":{"Paths":[]},"NumberOfPost":{"Value":0},"NumberOfFollowers":{"Value":0}},"TitlePart":{"Title":""},"MyCustomPart":{"NumberOfComment":{"Text":""}},"AgeDemorgraphic":{"Percentage":{"Text":""},"AgeGraphicsName":{"Text":""},"AgePercentage":{"Text":""}},"GenderDemorgraphic":{"GenderPercentage":{"Text":""},"GenderGraphicName":{"Text":""}},"GeoDemorgraphic":{"GeoPercentage":{"Text":""},"GeoGraphicName":{"Text":""}},"Post1":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post2":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post3":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post4":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}},"Post5":{"Time":{"Text":""},"Type":{"Text":""},"Title":{"Text":""},"Status":{"Text":""},"NumberOfComment":{"Text":""},"NumberOfShare":{"Text":""},"NumberOfReaction":{"Text":""},"Link":{"Text":""}}}'
 
-foodKeywords = "Bún Bò Huế,măm măm,món ngon,nấu cơm,ăn uống,nấu nướng,chiên xào,hấp,quán,xiên,luộc,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,nguội,khói,hổi,dĩa,tô,chén,bếp,lò,than,củi,ngon,dở,nồi,niêu,lửa,củi,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,dai,giòn,bổ,bổ dưỡng,rau,quả,nước tương,xì dầu,mì,bưng,hủ tiếu"
-cosmeticsKeywords = "da xinh,gầy,sần sùi,hair,mái tóc,môi,son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,cổ,đầu,chân,đùi,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,nhạy cảm,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,cá tính,đẳng cấp,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,Bong tróc,đóng vẩy,kích ứng,spa,kem"
-fashionKeywords = "hair,salon,mái tóc,diện,kính,sành điệu,Miss Teen,quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vóc,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,lót,bikini,xa xỉ,đẳng cấp,tóc,che khuyến điểm"
-sportKeywords = "gym,yoga,tập,năng động,thể thao,thể dục"
-travelKeywords = "tham quan,đi chơi,chuyến đi,nắng,mưa,hè,thu,check in,xuân,đông,khách sạn,hotel,nhà nghỉ,cảnh,cảnh đẹp,hùng vĩ,thiên nhiên,ồn,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
+foodKeywords = "Bún Bò Huế,măm măm,món ngon,nấu cơm,ăn uống,nấu nướng,chiên xào,hấp,quán,luộc,nhà hàng,khách sạn,đũa,gắp,mắm,muối,mặn,ngọt,chua,cay,dĩa,tô,chén,bếp,than,củi,nồi,niêu,lửa,hải sản,tôm,cua,cá,thịt,heo,gà,thịt bò,bổ dưỡng,rau quả,nước tương,xì dầu,mì,hủ tiếu,phở"
+cosmeticsKeywords = "da xinh,gầy,sần sùi,hair,mái tóc,môi,son,phấn,mỹ phẩm,da,mụn,nail,móng,lông,mắt,mũi,miệng,mịn,láng,nách,trắng,đen,hồng,màu,sắc,màu sắc,mông,trán,cánh tay,lông mi,lông mày,gội,xà phòng,tắm,rửa,sữa rửa,cằm,trang điểm,kem chống nắng,chống nắng,nám,sẹo,tàn nhang,đồi mồi,body,phấn phủ,kem nền,che khuyến điểm,tẩy trang,tế bào,uốn,nhuộm,duỗi,ủ mềm,khử mùi,vệ sinh,nước hoa,mẩn ngứa,nóng rát,phù,bong tróc,đóng vẩy,kích ứng,spa"
+fashionKeywords = "hair,salon,mái tóc,kính,sành điệu,miss teen,quần,áo,giày dép,thời trang,mẫu,mẫu mã,vải,vải vóc,túi,xách,jean,lụa,tơ,mũ,nón,bóp,đầm,váy,legging,dạ hội,cưới,áo cưới,trình diễn,kiếng,kính,đồng hồ,dây kéo,nịt,bikini,xa xỉ,đẳng cấp,che khuyến điểm"
+sportKeywords = "gym,yoga,năng động,thể thao,thể dục,bóng đá,bóng chuyền,bóng rổ,chạy bộ,run,cầu lông,quần vợt,tennis,đạp xe"
+travelKeywords = "tham quan,đi chơi,chuyến đi,mùa hè,mùa hạ,mùa thu,check in,mùa xuân,mùa đông,khách sạn,hotel,nhà nghỉ,cảnh đẹp,hùng vĩ,thiên nhiên,ồn ào,náo nhiệt,yên tĩnh,mát,mát mẻ"
 eventKeywords = "Singer,Faptv,Television,Entertainment,model,actor,Actor Comedy,giải trí,Clip,mv,video,tv,dvd,hát,event,bài hát,ca hát,đi hát,đêm nhạc,Giọng,Ca sĩ,nhạc,song,sing,ca"
-housewifeKeywords = "nấu cơm,món ngon,con cái,bỉm,sữa,tã,lò,nướng,bếp,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
-technologyKeywords = "down,down load,store,android,ios,phiên bản,software,phần mềm,soft,điện thoại,nhân tạo,công nghệ,kỹ thuật,app"
-realestateKeywords = "nhà,đất,động sản,sổ đỏ,sổ hồng,chung cư,tầng,lầu,cầu thang,biệt thự,giấy tờ,chính chủ,quy hoạch,bản đồ,vay vốn,vốn"
+housewifeKeywords = "nấu cơm,món ngon,con cái,bỉm,sữa,tã,bếp,chổi,quét,gia đình,dụng cụ,nội trợ,nấu,nướng"
+technologyKeywords = "down load,store,android,ios,phiên bản,software,phần mềm,soft,điện thoại,nhân tạo,công nghệ,kỹ thuật,app,play"
+realestateKeywords = "đất đai,động sản,sổ đỏ,sổ hồng,chung cư,tầng,lầu,cầu thang,biệt thự,chính chủ,quy hoạch,bản đồ,vay vốn"
 furnitureKeywords = "bàn,ghế,giường,kệ tivi,tủ,salon,sofa,kệ trang,đèn,đồng hồ,gối,thảm,tranh,két sắt"
-appliancesKeywords = "Nồi cơm điện,Máy Làm Mát,Điều Hòa,Lò vi sóng,Bếp ga,Bếp Âm,Bếp Từ,Hồng Ngoại,Máy hút khói,Nồi áp suất,Máy nóng lạnh,Ấm,Ca,Bình Đun,Máy lọc không khí,Máy xay sinh tố,Bình Thủy Điện,Máy ép trái cây,Máy làm sữa,Máy pha cà phê,Máy Hút Bụi,Bàn Ủi,Quạt,Máy Sấy Tóc,Đồ Dùng Nhà Bếp,Đồ dùng gia đình,Thiết Bị Chiếu Sáng,Nồi,Chảo,Máy nước nóng,Máy Lọc Nước,Bếp Nướng,Bếp gas,Bếp nướng điện,Lẩu điện,Máy đánh trứng,Máy pha cà phê,Máy hút chân không,Lò nướng,Lò vi sóng,Nồi chiên không dầu,Bình đun siêu tốc,Bình thủy điện,Máy hút mùi,Quạt,Quạt sưởi,Cây nước nóng lạnh,Bàn ủi,Máy lọc không khí,Thiết bị làm đẹp,Đèn sưởi,Máy bơm nước,bếp"
-autoGameKeywords = "xe,bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos,trò chơi,game,trò,down,down load,store,android,ios,phiên bản,chơi"
+appliancesKeywords = "Quạt nước,Nồi cơm điện,Máy Làm Mát,Điều Hòa,Lò vi sóng,Bếp ga,Bếp Âm,Bếp Từ,Hồng Ngoại,Máy hút khói,Nồi áp suất,Máy nóng lạnh,Ấm,Ca,Bình Đun,Máy lọc không khí,Máy xay sinh tố,Bình Thủy Điện,Máy ép trái cây,Máy làm sữa,Máy pha cà phê,Máy Hút Bụi,Bàn Ủi,Quạt,Máy Sấy Tóc,Đồ Dùng Nhà Bếp,Đồ dùng gia đình,Thiết Bị Chiếu Sáng,Máy nước nóng,Máy Lọc Nước,Bếp Nướng,Bếp gas,Bếp nướng điện,Lẩu điện,Máy đánh trứng,Máy pha cà phê,Máy hút chân không,Lò nướng,Lò vi sóng,Nồi chiên không dầu,Bình đun siêu tốc,Bình thủy điện,Máy hút mùi,Quạt sưởi,Cây nước nóng lạnh,Bàn ủi,Máy lọc không khí,Thiết bị làm đẹp,Đèn sưởi,Máy bơm nước"
+autoGameKeywords = "bánh xe,siêu sang,ô tô,auto,honda,toyota,xe hơi,xe con,bốn bánh,Abarth,Alfa,Romeo,Aston,Martin,Audi,Bentley,BMW,Bugatti,Cadillac,Caterham,Chevrolet,Chrysler,Citroen,Dacia,Ferrari,Fiat,Ford,Honda,Hyundai,Infiniti,Jaguar,Jeep,Kia,Lamborghini,Rover,Lexus,Lotus,Maserati,Mazda,Mclaren,Mercedes-Benz,MG,Mini,Mitsubishi,Morgan,Nissan,Noble,Pagani,Peugeot,Porsche,Radical,Renault,Rolls-Royce,Saab,Seat,Skoda,Smart,SsangYong,Subaru,Suzuki,Tesla,Toyota,Vauxhall,Volkswagen,Volvo,Zenos,trò chơi,game,down load,store,android,ios,phiên bản,play"
 
 influencerObject = json.loads(json_string)
 numberOfPost = []
@@ -374,6 +374,21 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
             data = driver.find_elements_by_xpath(elements_path[i])
 
             if len(data) == 0 and save_status == 3:
+
+                allDivs = driver.find_elements_by_xpath(
+                    "//div[contains(@class, '_50f4')]")
+                
+                # allDivsLoc = driver.find_elements_by_xpath(
+                #     "//div[contains(@class, '_50f4')]")
+                displayTextModel['location'] = "NA"
+                for div in allDivs:
+                    if div.text == "Hometown":
+                        nearestParent = div.find_element_by_xpath('..')
+                        displayTextModel['location'] = nearestParent.text.split("\n")[1]
+                    if div.text == "Gender":
+                        nearestParent = div.find_element_by_xpath('..')
+                        displayTextModel['gender'] = nearestParent.text.split("\n")[1]
+
                 driver.find_element_by_class_name(
                     'see_more_link_inner').click()
                 WebDriverWait(driver, 10).until(
@@ -462,7 +477,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, verify=False, headers={
+    request = requests.post('https://localhost:44300/api/graphql', json={'query': query}, verify=False, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -544,7 +559,7 @@ def scrap_profile(ids):
             save_status = 4
 
             scrape_data_post(userName, id, scan_list, section, elements_path,
-                            save_status, file_names, workEducation)
+                             save_status, file_names, workEducation)
 
             tokenObject = json.loads(tokenResponse.content)
             tokenAuthorization = tokenObject['token_type'] + \
@@ -552,12 +567,14 @@ def scrap_profile(ids):
 
             displayTextModelJson = json.dumps(displayTextModel)
 
-            influencerResponse = requests.post('http://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+            influencerResponse = requests.post('https://localhost:44300/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
                 'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
             displayTextModel['contentItemId'] = ""
             displayTextModel['displayText'] = ""
             displayTextModel['description'] = ""
+            displayTextModel['gender'] = ""
+            displayTextModel['location'] = ""
 
             print("Posts(Statuses) Done!")
             print("----------------------------------------")
