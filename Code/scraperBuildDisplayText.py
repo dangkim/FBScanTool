@@ -312,15 +312,24 @@ def extract_and_write_posts(userName, elements, filename, workEducation):
 # -------------------------------------------------------------
 
 
-def save_to_file(name, elements, status, current_section):
+def save_to_file(elements, status, current_section):
     """helper function used to save links to files"""
 
     try:
 
         # dealing with About Section
-        if status == 3:
-            workEducation = elements[0].text.replace("\n", "|")
-
+        if status == 3 and current_section == 0:
+            displayTextModel['description'] = elements[0].text.replace(
+                "\n", "|")
+        if status == 3 and current_section == 1:
+            displayTextModel["location"] = elements[0].text.split(
+                "\n")[1] + ";" + elements[0].text.split("\n")[3]
+        if status == 3 and current_section == 2:
+            fullString = elements[0].text
+            if ("Female" in fullString) or ("Nữ" in fullString):
+                displayTextModel["gender"] = "Nữ"
+            if ("Male" in fullString) or ("Nam" in fullString):
+                displayTextModel["gender"] = "Male"
         # dealing with Posts
         # elif status == 4:
         #     extract_and_write_posts(elements, name, workEducation)
@@ -377,17 +386,17 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
 
                 allDivs = driver.find_elements_by_xpath(
                     "//div[contains(@class, '_50f4')]")
-                
-                # allDivsLoc = driver.find_elements_by_xpath(
-                #     "//div[contains(@class, '_50f4')]")
+
                 displayTextModel['location'] = "NA"
                 for div in allDivs:
-                    if div.text == "Hometown":
+                    if div.text == "Hometown" or div.text == "Quê quán":
                         nearestParent = div.find_element_by_xpath('..')
-                        displayTextModel['location'] = nearestParent.text.split("\n")[1]
-                    if div.text == "Gender":
+                        displayTextModel['location'] = nearestParent.text.split("\n")[
+                            1]
+                    if div.text == "Gender" or div.text == "Giới tính":
                         nearestParent = div.find_element_by_xpath('..')
-                        displayTextModel['gender'] = nearestParent.text.split("\n")[1]
+                        displayTextModel['gender'] = nearestParent.text.split("\n")[
+                            1]
 
                 driver.find_element_by_class_name(
                     'see_more_link_inner').click()
@@ -396,13 +405,13 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                 data = driver.find_elements_by_css_selector(
                     ".text_exposed_root.text_exposed")
 
-            workEducation = save_to_file(file_names[i], data, save_status, i)
+            save_to_file(data, save_status, i)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",
                   str(save_status), sys.exc_info()[0])
 
-    return workEducation
+    return ""
 
 
 def scrape_data_post(userName, id, scan_list, section, elements_path, save_status, file_names, workEducation):
@@ -531,20 +540,22 @@ def scrap_profile(ids):
                     "//*[@id='fb-timeline-cover-name']/a")
                 userName += ";" + fullNameHref.text
 
+                # displayTextModel['location'] = driver.find_element_by_id("js_c8").text
+
             print("----------------------------------------")
             print("About:")
             # setting parameters for scrape_data() to scrap the about section
-            scan_list = [None] * 1
-            section = ["/about?section=education"]
+            scan_list = [None] * 3
+            section = ["/about?section=education",
+                       "/about?section=living", "/about?section=contact-info"]
             elements_path = [
                 "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
             file_names = ["Work and Education.txt"]
             save_status = 3
 
-            workEducation = scrape_data(id, scan_list, section, elements_path,
-                                        save_status, file_names)
+            scrape_data(id, scan_list, section, elements_path,
+                        save_status, file_names)
 
-            displayTextModel['description'] = workEducation
             print("About Section Done!")
 
             # ----------------------------------------------------------------------------
