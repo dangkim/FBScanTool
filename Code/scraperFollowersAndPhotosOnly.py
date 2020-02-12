@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('http://bdo8.com/connect/token', verify=False, data={
+tokenResponse = requests.post('https://bdo8.com/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -170,7 +170,7 @@ def image_downloader(img_links, folder_name):
 
         followerAndPhotoModelJson = json.dumps(followerAndPhotoModel)
 
-        influencerResponse = requests.post('http://bdo8.com/api/content/UpdateFollowerAndPhoto', verify=False, data=followerAndPhotoModelJson, headers={
+        influencerResponse = requests.post('https://bdo8.com/api/content/UpdateFollowerAndPhoto', verify=False, data=followerAndPhotoModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
         followerAndPhotoModel["ContentItemId"] = ''
@@ -282,7 +282,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
+    request = requests.post('https://bdo8.com/api/graphql', json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:

@@ -180,7 +180,7 @@ def scroll():
 # --Helper Functions for Posts
 
 def buildDisplayText(userName, status, work):
-    displayTextModel['displayText'] = userName + ";"
+    displayTextModel['displayText'] += userName + ";"
 
     for word in foodKeywords.split(","):
         if ((status.find(word) != -1) or (work.find(word) != -1)):
@@ -322,14 +322,14 @@ def save_to_file(elements, status, current_section):
             displayTextModel['description'] = elements[0].text.replace(
                 "\n", "|")
         if status == 3 and current_section == 1:
-            displayTextModel["location"] = elements[0].text.split(
-                "\n")[1] + ";" + elements[0].text.split("\n")[3]
+            displayTextModel['displayText'] += elements[0].text.split(
+                "\n")[1] + ";" + elements[0].text.split("\n")[3] + ";"
         if status == 3 and current_section == 2:
             fullString = elements[0].text
             if ("Female" in fullString) or ("Nữ" in fullString):
-                displayTextModel["gender"] = "Nữ"
+                displayTextModel['displayText'] += "Nữ;"
             if ("Male" in fullString) or ("Nam" in fullString):
-                displayTextModel["gender"] = "Male"
+                displayTextModel['displayText'] += "Male;"
         # dealing with Posts
         # elif status == 4:
         #     extract_and_write_posts(elements, name, workEducation)
@@ -387,25 +387,29 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                 allDivs = driver.find_elements_by_xpath(
                     "//div[contains(@class, '_50f4')]")
 
-                displayTextModel['location'] = "NA"
-                for div in allDivs:
-                    if div.text == "Hometown" or div.text == "Quê quán":
-                        nearestParent = div.find_element_by_xpath('..')
-                        displayTextModel['location'] = nearestParent.text.split("\n")[
-                            1]
-                    if div.text == "Gender" or div.text == "Giới tính":
-                        nearestParent = div.find_element_by_xpath('..')
-                        displayTextModel['gender'] = nearestParent.text.split("\n")[
-                            1]
+                defaultLocation = "AllGender"
+                
+                if displayTextModel['displayText'] == "":
+                    for div in allDivs:
+                        if (div.text == "Home Town" or div.text == "Quê quán"):
+                            nearestParent = div.find_element_by_xpath('..')
+                            defaultLocation = nearestParent.text.split("\n")[
+                                1]
+                            displayTextModel['displayText'] += defaultLocation + ";"
+                        if div.text == "Gender" or div.text == "Giới tính":
+                            nearestParent = div.find_element_by_xpath('..')
+                            displayTextModel['displayText'] += nearestParent.text.split("\n")[
+                                1] + ";"
 
-                driver.find_element_by_class_name(
-                    'see_more_link_inner').click()
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, ".text_exposed_root.text_exposed")))
-                data = driver.find_elements_by_css_selector(
-                    ".text_exposed_root.text_exposed")
-
-            save_to_file(data, save_status, i)
+                    driver.find_element_by_class_name(
+                        'see_more_link_inner').click()
+                    WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, ".text_exposed_root.text_exposed")))
+                    data = driver.find_elements_by_css_selector(
+                        ".text_exposed_root.text_exposed")
+                    save_to_file(data, save_status, i)
+            else:
+                save_to_file(data, save_status, i)
 
         except:
             print("Exception (scrape_data)", str(i), "Status =",

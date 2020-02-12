@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('http://bdo8.com/connect/token', verify=False, data={
+tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -64,9 +64,9 @@ def getNumberFromThousand(x):
         return 0
     numberOfValue = x.lower().rsplit('k', 1)
     if len(numberOfValue) > 1:
-        return float(numberOfValue[0]) * 1000
+        return int(numberOfValue[0]) * 1000
     else:
-        return float(numberOfValue[0])
+        return int(numberOfValue[0])
 
 
 def getThoundsandFromNumber(x):
@@ -343,14 +343,11 @@ def extract_and_write_posts(elements, fullNameHref):
 
         updatePostModel['posts'] = postModel
 
-        updatePostModel['numberOfTotalComment'] = getThoundsandFromNumber(
-            numberOfCommentTotal)
+        updatePostModel['numberOfTotalComment'] = numberOfCommentTotal
 
-        updatePostModel['numberOfTotalReaction'] = getThoundsandFromNumber(
-            numberOfReactionTotal)
+        updatePostModel['numberOfTotalReaction'] = numberOfReactionTotal
 
-        updatePostModel['numberOfTotalShare'] = getThoundsandFromNumber(
-            numberOfShareTotal)
+        updatePostModel['numberOfTotalShare'] = numberOfShareTotal
 
         updatePostModel['numberOfPost'] = len(elements)
 
@@ -361,11 +358,11 @@ def extract_and_write_posts(elements, fullNameHref):
 
         updatePostModelJson = json.dumps(updatePostModel)
 
-        influencerResponse = requests.post('http://bdo8.com/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
+        influencerResponse = requests.post('https://localhost:44300/api/content/UpdatePosts', verify=False, data=updatePostModelJson, headers={
             'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
         postModel.clear()
-        
+
     except:
         print("Exception (extract_and_write_posts)",
               "Status =", sys.exc_info()[0])
@@ -500,7 +497,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('http://bdo8.com/api/graphql', json={'query': query}, headers={
+    request = requests.post('https://localhost:44300/api/graphql', verify=False, json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
