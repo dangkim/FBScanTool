@@ -640,7 +640,7 @@ def login(email, password):
                   )
             exit()
 
-        driver.get("https://en-gb.facebook.com")
+        driver.get("https://www.facebook.com/")
         driver.maximize_window()
 
         # filling the form
