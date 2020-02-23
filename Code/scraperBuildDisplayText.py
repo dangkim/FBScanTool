@@ -321,11 +321,24 @@ def save_to_file(elements, status, current_section):
         if status == 3 and current_section == 0:
             displayTextModel['description'] = elements[0].text.replace(
                 "\n", "|")
+
         if status == 3 and current_section == 1:
-            displayTextModel['displayText'] += elements[0].text.split(
-                "\n")[1] + ";" + elements[0].text.split("\n")[3] + ";"
+            defaultLocation = "AllLoc"
+            if 0 < len(elements[0].text.split("\n")) and len(elements[0].text.split("\n")) < 3:
+                defaultLocation = elements[0].text.split("\n")[
+                    1]
+            elif "No places to show" in elements[0].text:
+                defaultLocation = defaultLocation
+            elif 0 < len(elements[0].text.split("\n")) and len(elements[0].text.split("\n")) > 3:
+                defaultLocation= elements[0].text.split(
+                    "\n")[1] + ";" + elements[0].text.split("\n")[3]
+                            
+            displayTextModel['displayText'] += defaultLocation + ";"
+
         if status == 3 and current_section == 2:
             fullString = elements[0].text
+            if "No basic info to show" in fullString:
+                displayTextModel['displayText'] += "AllGender;"
             if ("Female" in fullString) or ("Nữ" in fullString):
                 displayTextModel['displayText'] += "Nữ;"
             if ("Male" in fullString) or ("Nam" in fullString):
@@ -387,19 +400,22 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                 allDivs = driver.find_elements_by_xpath(
                     "//div[contains(@class, '_50f4')]")
 
-                defaultLocation = "AllGender"
-                
+                defaultLocation = "AllLoc"
+                defaultGender = "AllGender"
+
                 if displayTextModel['displayText'] == "":
                     for div in allDivs:
                         if (div.text == "Home Town" or div.text == "Quê quán"):
                             nearestParent = div.find_element_by_xpath('..')
                             defaultLocation = nearestParent.text.split("\n")[
                                 1]
-                            displayTextModel['displayText'] += defaultLocation + ";"
                         if div.text == "Gender" or div.text == "Giới tính":
                             nearestParent = div.find_element_by_xpath('..')
-                            displayTextModel['displayText'] += nearestParent.text.split("\n")[
-                                1] + ";"
+                            defaultGender = nearestParent.text.split("\n")[
+                                1]
+
+                    displayTextModel['displayText'] += defaultLocation + ";"
+                    displayTextModel['displayText'] += defaultGender + ";"
 
                     driver.find_element_by_class_name(
                         'see_more_link_inner').click()
