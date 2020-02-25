@@ -324,15 +324,16 @@ def save_to_file(elements, status, current_section):
 
         if status == 3 and current_section == 1:
             defaultLocation = "AllLoc"
-            if 0 < len(elements[0].text.split("\n")) and len(elements[0].text.split("\n")) < 3:
+
+            if "No places to show" in elements[0].text:
+                defaultLocation = defaultLocation
+            elif 0 < len(elements[0].text.split("\n")) and len(elements[0].text.split("\n")) < 3:
                 defaultLocation = elements[0].text.split("\n")[
                     1]
-            elif "No places to show" in elements[0].text:
-                defaultLocation = defaultLocation
             elif 0 < len(elements[0].text.split("\n")) and len(elements[0].text.split("\n")) > 3:
-                defaultLocation= elements[0].text.split(
+                defaultLocation = elements[0].text.split(
                     "\n")[1] + ";" + elements[0].text.split("\n")[3]
-                            
+
             displayTextModel['displayText'] += defaultLocation + ";"
 
         if status == 3 and current_section == 2:
@@ -528,7 +529,8 @@ def scrap_profile(ids):
 
         driver.get(id)
         url = driver.current_url
-        id = create_original_link(url)
+        pureUrl = url[:url.index('?')]
+        id = create_original_link(pureUrl)
 
         userName = id.rsplit('/')[-1]
 
