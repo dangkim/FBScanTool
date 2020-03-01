@@ -323,7 +323,7 @@ def save_to_file(elements, status, current_section):
                 "\n", "|")
 
         if status == 3 and current_section == 1:
-            defaultLocation = "AllLoc"
+            defaultLocation = "Ho Chi Minh City;Hanoi"
 
             if "No places to show" in elements[0].text:
                 defaultLocation = defaultLocation
@@ -529,7 +529,11 @@ def scrap_profile(ids):
 
         driver.get(id)
         url = driver.current_url
-        pureUrl = url[:url.index('?')]
+        if url.startswith('?'):
+            pureUrl = url[:url.index('?')]
+        else:
+            pureUrl = url
+        
         id = create_original_link(pureUrl)
 
         userName = id.rsplit('/')[-1]
