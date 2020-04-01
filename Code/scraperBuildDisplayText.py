@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
+tokenResponse = requests.post('https://bdo8.com/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -338,12 +338,15 @@ def save_to_file(elements, status, current_section):
 
         if status == 3 and current_section == 2:
             fullString = elements[0].text
+            defaultGender = "AllGender;"
             if "No basic info to show" in fullString:
-                displayTextModel['displayText'] += "AllGender;"
+                defaultGender = "AllGender;"
             if ("Female" in fullString) or ("Nữ" in fullString):
-                displayTextModel['displayText'] += "Nữ;"
+                defaultGender = "Nữ;"
             if ("Male" in fullString) or ("Nam" in fullString):
-                displayTextModel['displayText'] += "Male;"
+                defaultGender = "Male;"
+            
+            displayTextModel['displayText'] += defaultGender
         # dealing with Posts
         # elif status == 4:
         #     extract_and_write_posts(elements, name, workEducation)
@@ -507,7 +510,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('https://localhost:44300/api/graphql', json={'query': query}, verify=False, headers={
+    request = requests.post('https://bdo8.com/api/graphql', json={'query': query}, verify=False, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -604,7 +607,7 @@ def scrap_profile(ids):
 
             displayTextModelJson = json.dumps(displayTextModel)
 
-            influencerResponse = requests.post('https://localhost:44300/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
+            influencerResponse = requests.post('https://bdo8.com/api/content/UpdateDisplayText', verify=False, data=displayTextModelJson, headers={
                 'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
             displayTextModel['contentItemId'] = ""

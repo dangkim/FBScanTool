@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
-tokenResponse = requests.post('https://localhost:44300/connect/token', verify=False, data={
+tokenResponse = requests.post('https://bdo8.com/connect/token', verify=False, data={
     'grant_type': 'password', 'username': 'admin', 'password': '@Bcd1234', 'client_id': 'kolviet', 'client_secret': 'kolviet'
 }, headers={'Content-Type': 'application/x-www-form-urlencoded', }
 )
@@ -444,7 +444,7 @@ def run_query(query):
     tokenAuthorization = tokenObject['token_type'] + \
         " " + tokenObject['access_token']
 
-    request = requests.post('https://localhost:44300/api/graphql', verify=False, json={'query': query}, headers={
+    request = requests.post('https://bdo8.com/api/graphql', verify=False, json={'query': query}, headers={
         'Authorization': tokenAuthorization})
 
     if request.status_code == 200:
@@ -527,7 +527,7 @@ def scrap_profile(ids):
                 " " + tokenObject['access_token']
             # insert influencer
             # influencerJson = json.dumps(influencerObject)
-            influencerResponse = requests.post('https://localhost:44300/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
+            influencerResponse = requests.post('https://bdo8.com/api/content/Post', verify=False, data=json.dumps(influencerObject), headers={
                 'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
             influencerObject["Influencer"]["FullName"]["Text"] = ""
