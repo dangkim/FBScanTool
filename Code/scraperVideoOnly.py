@@ -201,7 +201,8 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
             data = driver.find_elements_by_xpath(elements_path[i])
 
             if len(data) == 0:
-                data = driver.find_elements_by_css_selector(".async_saving._400z._2-40.__-q._5asm._62ej")
+                data = driver.find_elements_by_css_selector(
+                    ".async_saving._400z._2-40.__-q._5asm._62ej")
 
             if len(data) > 5:
                 save_to_file(file_names[i], data[0:5],
@@ -422,8 +423,9 @@ def scrap_profile(ids):
 
             videoModelJson = json.dumps(videoModel)
 
-            influencerResponse = requests.post('https://bdo8.com/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
-                'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
+            if len(videoModel['videoPaths']) > 0:
+                influencerResponse = requests.post('https://bdo8.com/api/content/UpdateVideos', verify=False, data=videoModelJson, headers={
+                    'Content-Type': 'application/json', 'Authorization': tokenAuthorization})
 
             print("\nProcess Completed.")
 

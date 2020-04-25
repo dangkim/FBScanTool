@@ -469,6 +469,10 @@ def scrap_profile(ids):
         id = create_original_link(url)
         userName = id.rsplit('/')[-1]
 
+        if 'Not Found' in driver.title:
+            wrongFaceBook.append(id)
+            continue
+
         # The GraphQL query (with a few aditional bits included) itself defined as a multi-line string.
         query = '''{{
 	        influencer(where: {{displayText_contains: "{0}"}}, status: PUBLISHED) {{
@@ -478,11 +482,7 @@ def scrap_profile(ids):
 
         result = run_query(query)  # execute query
 
-        if len(result['data']['influencer']) == 0:
-
-            if 'Not Found' in driver.title:
-                wrongFaceBook.append(id)
-                continue
+        if len(result['data']['influencer']) == 0:           
 
             try:
                 expiredElement = driver.find_element_by_css_selector(

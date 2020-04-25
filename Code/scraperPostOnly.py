@@ -45,8 +45,6 @@ json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Infl
 
 influencerObject = json.loads(json_string)
 
-postModel = []
-
 updatePostModel = {
     "posts": [],
     "contentItemId": "",
@@ -64,7 +62,7 @@ def getNumberFromThousand(x):
         return 0
     numberOfValue = x.lower().rsplit('k', 1)
     if len(numberOfValue) > 1:
-        return int(numberOfValue[0]) * 1000
+        return int(float(numberOfValue[0]) * 1000)
     else:
         return int(numberOfValue[0])
 
@@ -197,11 +195,12 @@ def extract_and_write_posts(elements, fullNameHref):
     numberOfReactionTotal = 0
     numberOfShareTotal = 0
     indexOfPost = 0
+    postModel = []
 
     try:
-        for x in elements:
+        for x in elements[:5]:
             try:
-                indexOfPost += 1
+                # indexOfPost += 1
 
                 video_link = " "
                 title = " "
@@ -228,8 +227,10 @@ def extract_and_write_posts(elements, fullNameHref):
                 # title
                 title = get_title(x)
                 if title.text.find("shared a memory") != -1:
-                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
-                    title = get_title(x)
+                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")                    
+                    titleChild = get_title(x)
+                    if titleChild != '':
+                        title =titleChild
 
                 status = get_status(x)
                 if fullNameHref != "":
@@ -324,19 +325,19 @@ def extract_and_write_posts(elements, fullNameHref):
                     "Type": ""
                 }
 
-                if(indexOfPost <= 5):
-                    postItem['Time'] = time
-                    postItem['Type'] = type
-                    postItem['Title'] = title
-                    postItem['Status'] = status
+                # if(indexOfPost <= 5):
+                postItem['Time'] = time
+                postItem['Type'] = type
+                postItem['Title'] = title
+                postItem['Status'] = status
 
-                    postItem['NumberOfComment'] = getThoundsandFromNumber(cm)
+                postItem['NumberOfComment'] = getThoundsandFromNumber(cm)
 
-                    postItem['NumberOfReaction'] = getThoundsandFromNumber(rea)
+                postItem['NumberOfReaction'] = getThoundsandFromNumber(rea)
 
-                    postItem['NumberOfShare'] = getThoundsandFromNumber(sh)
+                postItem['NumberOfShare'] = getThoundsandFromNumber(sh)
 
-                    postModel.append(postItem)
+                postModel.append(postItem)
 
             except:
                 pass

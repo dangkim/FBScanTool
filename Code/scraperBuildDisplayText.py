@@ -319,7 +319,7 @@ def save_to_file(elements, status, current_section):
 
         # dealing with About Section
         if status == 3 and current_section == 0:
-            displayTextModel['description'] = elements[0].text.replace(
+            displayTextModel['description'] += elements[0].text.replace(
                 "\n", "|")
 
         if status == 3 and current_section == 1:
@@ -345,7 +345,7 @@ def save_to_file(elements, status, current_section):
                 defaultGender = "Nữ;"
             if ("Male" in fullString) or ("Nam" in fullString):
                 defaultGender = "Male;"
-            
+
             displayTextModel['displayText'] += defaultGender
         # dealing with Posts
         # elif status == 4:
@@ -404,7 +404,7 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                 allDivs = driver.find_elements_by_xpath(
                     "//div[contains(@class, '_50f4')]")
 
-                defaultLocation = "AllLoc"
+                defaultLocation = "Ho Chi Minh City;Hanoi"
                 defaultGender = "AllGender"
 
                 if displayTextModel['displayText'] == "":
@@ -415,8 +415,16 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                                 1]
                         if div.text == "Gender" or div.text == "Giới tính":
                             nearestParent = div.find_element_by_xpath('..')
-                            defaultGender = nearestParent.text.split("\n")[
+                            localGender = nearestParent.text.split("\n")[
                                 1]
+                            if ("Female" in localGender) or ("Nữ" in localGender):
+                                defaultGender = "Nữ"
+                            if ("Male" in localGender) or ("Nam" in localGender):
+                                defaultGender = "Male"
+                        if div.text == "About" or div.text == "Giới tính":
+                            nearestParent = div.find_element_by_xpath('..')
+                            displayTextModel['description'] += nearestParent.text.split("\n")[
+                                1] + '|'
 
                     displayTextModel['displayText'] += defaultLocation + ";"
                     displayTextModel['displayText'] += defaultGender + ";"
@@ -536,7 +544,7 @@ def scrap_profile(ids):
             pureUrl = url[:url.index('?')]
         else:
             pureUrl = url
-        
+
         id = create_original_link(pureUrl)
 
         userName = id.rsplit('/')[-1]
