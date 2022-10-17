@@ -1,17 +1,17 @@
-import calendar
 import os
 import platform
 import sys
 import urllib.request
-import time
 import json
-
+import time as t
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+import utils
+import postUtils
 
 # -------------------------------------------------------------
 # -------------------------------------------------------------
@@ -42,6 +42,8 @@ json_string = '{"ContentItemId":"","ContentItemVersionId":"","ContentType":"Infl
 influencerObject = json.loads(json_string)
 numberOfPost = []
 displayText = ""
+
+
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
@@ -52,13 +54,10 @@ def get_facebook_images_url(img_links):
         if link != "None":
             valid_url_found = False
             driver.get(link)
-
             try:
                 while not valid_url_found:
-                    WebDriverWait(driver, 30).until(
-                        EC.presence_of_element_located((By.CLASS_NAME, "spotlight")))
-                    element = driver.find_element_by_class_name("spotlight")
-                    img_url = element.get_attribute('src')
+                    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//img")))
+                    img_url = driver.find_elements(By.XPATH, "//img")[0].get_attribute('src')
                     print(img_url)
                     if img_url.find('.gif') == -1:
                         valid_url_found = True
@@ -148,110 +147,28 @@ def scroll():
 
 # --Helper Functions for Posts
 
-def get_status(x):
-    status = ""
-    try:
-        status = x.find_element_by_xpath(
-            ".//div[@data-testid='post_message']").text
-    except:
-        try:
-            status = x.find_element_by_xpath(
-                ".//div[@data-testid='post_message']").text
-        except:
-            pass
-    return status
 
 def get_div_links(x, tag):
     try:
         temp = x.find_element_by_xpath(".//div[@class='_3x-2']")
         return temp.find_element_by_tag_name(tag)
-    except:
+    except NoSuchElementException:
         return ""
+
 
 def get_title_links(title):
     l = title.find_elements_by_tag_name('a')
     return l[-1].text, l[-1].get_attribute('href')
 
-def get_title(x):
-    title = ""
-    try:
-        title = x.find_element_by_xpath(".//span[@class='fwb fcg']")
-    except:
-        try:
-            title = x.find_element_by_xpath(".//span[@class='fcg']")
-        except:
-            try:
-                title = x.find_element_by_xpath(".//span[@class='fwn fcg']")
-            except:
-                pass
-    finally:
-        return title
 
-def get_time(x):
-    time = ""
-    try:
-        time = x.find_element_by_tag_name('abbr').get_attribute('title')
-        time = str("%02d" % int(time.split(", ")[1].split()[1]), ) + "-" + str(
-            ("%02d" % (int((list(calendar.month_abbr).index(time.split(", ")[1].split()[0][:3]))),))) + "-" + \
-            time.split()[3] + " " + str("%02d" % int(time.split()[5].split(":")[0])) + ":" + str(
-            time.split()[5].split(":")[1])
-    except:
-        pass
-
-    finally:
-        return time
-
-def get_reactive(x):
-    reactive = ""
-    try:
-        reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
-    except:
-        try:
-            reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
-        except:
-            try:
-                reactive = x.find_element_by_xpath(".//span[@class='_81hb']")
-            except:
-                pass
-    finally:
-        return reactive
-
-def get_commentno(x):
-    commentno = ""
-    try:
-        commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
-    except:
-        try:
-            commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
-        except:
-            try:
-                commentno = x.find_element_by_xpath(".//span[@class='_1whp _4vn2']")
-            except:
-                pass
-    finally:
-        return commentno
-
-def get_share(x):
-    share = ""
-    try:
-        share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
-    except:
-        try:
-            share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
-        except:
-            try:
-                share = x.find_element_by_xpath(".//span[@class='_355t _4vn2']")
-            except:
-                pass
-    finally:
-        return share
 
 def extract_and_write_posts(elements, filename):
     try:
         f = open(filename, 'w', encoding='utf-8', newline='\r\n')
         f.writelines(
             ' TIME | TYPE  | TITLE | STATUS | REACTIVE | COMMENTNO | SHARE |LINKS(Shared Posts/Shared Links etc) ' + '\n' + '\n')
-
+        driver.execute_script("window.scrollTo(document.body.scrollHeight, 0)")
+        t.sleep(3)
         for x in elements:
             try:
                 video_link = " "
@@ -263,75 +180,56 @@ def extract_and_write_posts(elements, filename):
                 reactive = " "
                 commentno = " "
                 share = " "
-
+                # Number of Comments
+                commentno = postUtils.get_comment_number(x)
                 # share
-                share = get_share(x)
-
-                # commentno
-                commentno = get_commentno(x)
-
+                share = postUtils.get_share(x)
                 # reactive
-                reactive = get_reactive(x)
-
+                reactive = postUtils.get_reactive(x)
                 # time
-                time = get_time(x)
-
+                # TODO
+                time = postUtils.get_time(x)
                 # title
-                title = get_title(x)
-                if title.text.find("shared a memory") != -1:
-                    x = x.find_element_by_xpath(".//div[@class='_1dwg _1w_m']")
-                    title = get_title(x)
-
-                status = get_status(x)
-                if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
-                    if status == '':
-                        temp = get_div_links(x, "img")
-                        if temp == '':  # no image tag which means . it is not a life event
-                            link = get_div_links(x, "a").get_attribute('href')
-                            type = "status update without text"
-                        else:
-                            type = 'life event'
-                            link = get_div_links(x, "a").get_attribute('href')
-                            status = get_div_links(x, "a").text
-                    else:
-                        type = "status update"
-                        if get_div_links(x, "a") != '':
-                            link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" shared ") != -1:
-
-                    x1, link = get_title_links(title)
-                    type = "shared " + x1
-
-                elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
-                    if title.text.find(" at ") != -1:
-                        x1, link = get_title_links(title)
-                        type = "check in"
-                    elif title.text.find(" in ") != 1:
-                        status = get_div_links(x, "a").text
-
-                elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
-                    type = "added photo"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
-                    type = "added video"
-                    link = get_div_links(x, "a").get_attribute('href')
-
-                else:
-                    type = "others"
-
-                if not isinstance(title, str):
-                    title = title.text
-
-                if not isinstance(reactive, str):
-                    reactive = reactive.text
-
-                if not isinstance(commentno, str):
-                    commentno = commentno.text
-
-                if not isinstance(share, str):
-                    share = share.text
+                title = postUtils.get_title(x)
+                # TODO
+                # status = postUtils.get_status(x)
+                # if title.text == driver.find_element_by_id("fb-timeline-cover-name").text:
+                #     if status == '':
+                #         temp = get_div_links(x, "img")
+                #         if temp == '':  # no image tag which means . it is not a life event
+                #             link = get_div_links(x, "a").get_attribute('href')
+                #             type = "status update without text"
+                #         else:
+                #             type = 'life event'
+                #             link = get_div_links(x, "a").get_attribute('href')
+                #             status = get_div_links(x, "a").text
+                #     else:
+                #         type = "status update"
+                #         if get_div_links(x, "a") != '':
+                #             link = get_div_links(x, "a").get_attribute('href')
+                #
+                # elif title.text.find(" shared ") != -1:
+                #
+                #     x1, link = get_title_links(title)
+                #     type = "shared " + x1
+                #
+                # elif title.text.find(" at ") != -1 or title.text.find(" in ") != -1:
+                #     if title.text.find(" at ") != -1:
+                #         x1, link = get_title_links(title)
+                #         type = "check in"
+                #     elif title.text.find(" in ") != 1:
+                #         status = get_div_links(x, "a").text
+                #
+                # elif title.text.find(" added ") != -1 and title.text.find("photo") != -1:
+                #     type = "added photo"
+                #     link = get_div_links(x, "a").get_attribute('href')
+                #
+                # elif title.text.find(" added ") != -1 and title.text.find("video") != -1:
+                #     type = "added video"
+                #     link = get_div_links(x, "a").get_attribute('href')
+                #
+                # else:
+                #     type = "others"
 
                 status = status.replace("\n", " ")
                 title = title.replace("\n", " ")
@@ -339,17 +237,17 @@ def extract_and_write_posts(elements, filename):
                 commentno = commentno.replace("\n", " ")
                 share = share.replace("\n", " ")
 
-                line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(reactive) + ' | '+ str(commentno) + ' | '+ str(share) + ' | ' + str(
-                    link) + "\n"
+                line = str(time) + " | " + str(type) + ' | ' + str(title) + ' | ' + str(status) + ' | ' + str(
+                    reactive) + ' | ' + str(commentno) + ' | ' + str(share) + ' | ' + str(link) + "\n"
 
                 try:
                     f.writelines(line)
-                except:
+                except NoSuchElementException:
                     print('Posts: Could not map encoded characters')
-            except:
+            except NoSuchElementException:
                 pass
         f.close()
-    except:
+    except NoSuchElementException:
         print("Exception (extract_and_write_posts)",
               "Status =", sys.exc_info()[0])
 
@@ -381,19 +279,34 @@ def save_to_file(name, elements, status, current_section, username=''):
         # dealing with Friends
         if status == 0:
             # get profile links of friends
-            results = [x.get_attribute('href') for x in elements]
-            results = [create_original_link(x) for x in results]
+            results = []
+            people_names = []
+            for element in elements:
+                try:
+                    links_of_friends = element.find_element_by_xpath('./div[2]/div[1]/a').get_attribute('href')
+                    if 'pages' not in links_of_friends:
+                        results.append(links_of_friends)
+                        # get names of friends
+                        if element.text.split('\n')[0]:
+                            people_names.append(element.text.split('\n')[0])
 
-            # get names of friends
-            people_names = [x.find_element_by_tag_name(
-                "img").get_attribute("aria-label") for x in elements]
+                except NoSuchElementException:
+                    continue
+            results = [utils.create_original_link(x) for x in results]
 
             # download friends' photos
             try:
                 if download_friends_photos:
                     if friends_small_size:
-                        img_links = [x.find_element_by_css_selector(
-                            'img').get_attribute('src') for x in elements]
+                        # img_links = [x.find_element_by_css_selector(
+                        #     'img').get_attribute('src') for x in elements]
+                        img_links = []
+                        for element in elements:
+                            try:
+                                img_links.append(element.find_element_by_xpath('./div[1]/a/img').get_attribute('src'))
+
+                            except NoSuchElementException:
+                                continue
                     else:
                         links = []
                         for friend in results:
@@ -432,9 +345,7 @@ def save_to_file(name, elements, status, current_section, username=''):
         # dealing with Photos
         # Influencer Photos
         elif status == 1:
-            results = [x.get_attribute('href') for x in elements]
-            results.pop(0)
-
+            results = [x.get_attribute('src') for x in elements]
             try:
                 if download_uploaded_photos:
                     if photos_small_size:
@@ -461,22 +372,12 @@ def save_to_file(name, elements, status, current_section, username=''):
 
         # dealing with Videos
         elif status == 2:
-            results = elements[0].find_elements_by_css_selector('li')
-            results = [x.find_element_by_css_selector(
-                'a').get_attribute('href') for x in results]
-
-            try:
-                if results[0][0] == '/':
-                    results = [r.pop(0) for r in results]
-                    results = [("https://en-gb.facebook.com/" + x)
-                               for x in results]
-            except:
-                pass
-
+            results = [x.get_attribute('src') for x in elements]
         # dealing with About Section
         elif status == 3:
-            results = elements[0].text
-            f.writelines(results)
+            if elements:
+                results = elements[0].text
+                f.writelines(results)
 
         # dealing with Posts
         elif status == 4:
@@ -545,17 +446,25 @@ def scrape_data(id, scan_list, section, elements_path, save_status, file_names):
                     save_status == 2):  # Only run this for friends, photos and videos
 
                 # the bar which contains all the sections
-                sections_bar = driver.find_element_by_xpath(
-                    "//*[@class='_3cz'][1]/div[2]/div[1]")
-
-                if sections_bar.text.find(scan_list[i]) == -1:
+                sections_bar = driver.find_elements(By.XPATH,
+                                                    "//div[@class='x6s0dn4 x9f619 x2lah0s x1hshjfz x1n2onr6 x3nfvp2 xrbpyxo x16dsc37 xng8ra x1pi30zi x1swvt13']")
+                is_in_correct_section = False
+                for section in sections_bar:
+                    section_text = section.find_element_by_xpath('./*').get_attribute("innerHTML")
+                    if scan_list[i] in section_text:
+                        is_in_correct_section = True
+                        break
+                if not is_in_correct_section:
                     continue
 
             if save_status != 3:
                 scroll()
 
-            data = driver.find_elements_by_xpath(elements_path[i])
+            # data = driver.find_elements_by_xpath(elements_path[i])
+            if save_status == 4:
+                t.sleep(3)
 
+            data = driver.find_elements(By.XPATH, elements_path[i])
             save_to_file(file_names[i], data, save_status, i, username)
 
         except:
@@ -575,10 +484,10 @@ def create_original_link(url):
 
     elif url.find("fnr_t") != -1:
         original_link = "https://en-gb.facebook.com/" + \
-            ((url.split("/"))[-1].split("?")[0])
+                        ((url.split("/"))[-1].split("?")[0])
     elif url.find("_tab") != -1:
         original_link = "https://en-gb.facebook.com/" + \
-            (url.split("?")[0]).split("/")[-1]
+                        (url.split("?")[0]).split("/")[-1]
     else:
         original_link = url
 
@@ -596,21 +505,22 @@ def scrap_profile(ids):
     folder = os.path.join(os.getcwd(), "Data")
     create_folder(folder)
     os.chdir(folder)
-
-    # execute for all profiles given in input.txt file
+    # Execute for all profiles given in input.txt file
     for id in ids:
-
         driver.get(id)
         url = driver.current_url
-        id = create_original_link(url)
-
+        id = utils.create_original_link(url)
         print("\nScraping:", id)
-
-        followerSpan = driver.find_element_by_xpath("//*[@id='profileEscapeHatchContentID']/div[2]/div/div[2]/div[2]/div[2]/span")
-        influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = followerSpan.text
-
         try:
-            target_dir = os.path.join(folder, id.split('/')[-1])
+            follower_span = driver.find_element_by_xpath('//a[@href="' + id + "/followers" + '"]')
+            influencerObject["Influencer"]["NumberOfFollowers"]["Value"] = follower_span.text.replace(' people',
+                                                                                                      '').replace(',',
+                                                                                                                  '',
+                                                                                                                  100)
+        except NoSuchElementException:
+            pass
+        try:
+            target_dir = utils.get_profile_folder(folder, id)
             create_folder(target_dir)
             os.chdir(target_dir)
         except:
@@ -621,23 +531,25 @@ def scrap_profile(ids):
         print("----------------------------------------")
         print("Friends..")
         # setting parameters for scrape_data() to scrape friends
-        scan_list = ["All", "Mutual Friends", "Following", "Followers", "Work", "College", "Current City", "Hometown"]
-        section = ["/friends", "/friends_mutual", "/following", "/followers", "/friends_work", "/friends_college",
-                   "/friends_current_city",
-                   "/friends_hometown"]
-        elements_path = ["//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@class,'_3i9')][1]/div/div/ul/li[1]/div[2]/div/div/div/div/div[2]/ul/li/div/a",
-                         "//*[contains(@class,'fbProfileBrowserListItem')]/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a",
-                         "//*[contains(@id,'pagelet_timeline_medley_friends')][1]/div[2]/div/ul/li/div/a"]
-        file_names = ["All Friends.txt", "Mutual Friends.txt", "Following.txt", "Followers.txt", "Work Friends.txt",
+        scan_list = ["All friends",
+                     "Mutual friends",
+                     "Following",
+                     "Followers",
+                     "Work",
+                     "University",
+                     "Current City",
+                     "Home Town"]
+        section = utils.get_friend_section_route(url)
+        elements_path = ["//div[@class='x6s0dn4 x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1olyfxc x9f619 x78zum5 x1e56ztr xyamay9 x1pi30zi x1l90r2v x1swvt13 x1gefphp']"] * 8
+        file_names = ["All Friends.txt",
+                      "Mutual Friends.txt",
+                      "Following.txt",
+                      "Followers.txt",
+                      "Work Friends.txt",
                       "College Friends.txt",
-                      "Current City Friends.txt", "Hometown Friends.txt"]
+                      "Current City Friends.txt",
+                      "Hometown Friends.txt"]
         save_status = 0
-
         scrape_data(id, scan_list, section, elements_path, save_status, file_names)
         print("Friends Done!")
 
@@ -648,13 +560,12 @@ def scrap_profile(ids):
         print("Scraping Links..")
         # setting parameters for scrape_data() to scrap photos
         scan_list = ["'s Photos", "Photos of"]
-        section = ["/photos_all", "/photos_of"]
-        elements_path = ["//*[contains(@id, 'pic_')]"] * 2
+        section = utils.get_photos_section_route(url)
+        elements_path = ["//img[@class='xzg4506 xycxndf xua58t2 x4xrfw5 x1lq5wgf xgqcy7u x30kzoy x9jhf4c x9f619 x5yr21d xl1xv1r xh8yej3']"] * 2
         file_names = ["Uploaded Photos.txt", "Tagged Photos.txt"]
         save_status = 1
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
+        scrape_data(id, scan_list, section, elements_path, save_status, file_names)
         print("Photos Done!")
 
         # ----------------------------------------------------------------------------
@@ -662,8 +573,8 @@ def scrap_profile(ids):
         print("Videos:")
         # setting parameters for scrape_data() to scrap videos
         scan_list = ["'s Videos", "Videos of"]
-        section = ["/videos_by", "/videos_of"]
-        elements_path = ["//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul"] * 2
+        section = utils.get_video_section_route(url)
+        elements_path = ["//img[@class='xzg4506 xycxndf xua58t2 x4xrfw5 x1lq5wgf xgqcy7u x30kzoy x9jhf4c x9f619 x5yr21d xl1xv1r xh8yej3']"] * 2
         file_names = ["Uploaded Videos.txt", "Tagged Videos.txt"]
         save_status = 2
 
@@ -675,17 +586,18 @@ def scrap_profile(ids):
         print("About:")
         # setting parameters for scrape_data() to scrap the about section
         scan_list = [None] * 7
-        section = ["/about?section=overview", "/about?section=education", "/about?section=living",
-                   "/about?section=contact-info", "/about?section=relationship", "/about?section=bio",
-                   "/about?section=year-overviews"]
-        elements_path = [
-            "//*[contains(@id, 'pagelet_timeline_app_collection_')]/ul/li/div/div[2]/div/div"] * 7
-        file_names = ["Overview.txt", "Work and Education.txt", "Places Lived.txt", "Contact and Basic Info.txt",
-                      "Family and Relationships.txt", "Details About.txt", "Life Events.txt"]
+        section = utils.get_about_section_route(url)
+        elements_path = ["//div[@class='x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj']/div[2]/div[1]/span"] * 7
+        file_names = ["Overview.txt",
+                      "Work and Education.txt",
+                      "Places Lived.txt",
+                      "Contact and Basic Info.txt",
+                      "Family and Relationships.txt",
+                      "Details About.txt",
+                      "Life Events.txt"]
         save_status = 3
 
-        scrape_data(id, scan_list, section, elements_path,
-                    save_status, file_names)
+        scrape_data(id, scan_list, section, elements_path, save_status, file_names)
         print("About Section Done!")
 
         # ----------------------------------------------------------------------------
@@ -694,7 +606,7 @@ def scrap_profile(ids):
         # setting parameters for scrape_data() to scrap posts
         scan_list = [None]
         section = []
-        elements_path = ['//div[@class="_5pcb _4b0l _2q8l"]']
+        elements_path = ['//div[@class="x1ja2u2z xh8yej3 x1n2onr6 x1yztbdb"]']
 
         file_names = ["Posts.txt"]
         save_status = 4
@@ -740,8 +652,9 @@ def login(email, password):
                 driver = webdriver.Chrome(
                     executable_path="./chromedriver", options=options)
             else:
+                options.binary_location = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
                 driver = webdriver.Chrome(
-                    executable_path="./chromedriver.exe", options=options)
+                    executable_path="F:\\Project\\KOLS\\KOLS\\Code\\chromedriver.exe", options=options)
         except:
             print("Kindly replace the Chrome Web Driver with the latest one from "
                   "http://chromedriver.chromium.org/downloads "
@@ -758,7 +671,7 @@ def login(email, password):
         driver.find_element_by_name('pass').send_keys(password)
 
         # clicking on login button
-        driver.find_element_by_id('loginbutton').click()
+        driver.find_element_by_name('login').click()
 
         # if your account uses multi factor authentication
         mfa_code_input = safe_find_element_by_id(driver, 'approvals_code')
@@ -787,7 +700,7 @@ def login(email, password):
 # -----------------------------------------------------------------------------
 
 def main():
-    with open('D:\\workspace\\Ultimate-Facebook-Scraper\\Code\\credentials.txt') as f:
+    with open('F:\\Project\\KOLS\\KOLS\\Code\\credentials.txt') as f:
         email = f.readline().split('"')[1]
         password = f.readline().split('"')[1]
 
@@ -797,7 +710,7 @@ def main():
             exit()
 
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open(
-        "D:\\workspace\\Ultimate-Facebook-Scraper\\Code\\input.txt", newline='\n')]
+        "F:\\Project\\KOLS\\KOLS\\Code\\input1.txt", newline='\n')]
 
     if len(ids) > 0:
         print("\nStarting Scraping...")
